@@ -4,19 +4,53 @@ export const LEGACY_KEY = 'gta6-trophy-checklist';
 export const PHASES = [
   { id: 'story', title: 'Story chapters', short: 'Story', detail: 'Play the five story chapters at your own pace. Before advancing in Chapter 1, accept the morning meditation invitation. Keep cheats disabled: the notes say they disable trophies and saving.' },
   { id: 'missions', title: 'Key missions', short: 'Missions', detail: 'Collect the mission-specific story trophies along the way. Several chapter trophies unlock after the beginning of the next chapter, so keep playing if a chapter notification seems delayed.' },
-  { id: 'characters', title: 'Character strands', short: 'Characters', detail: 'Follow character texts and optional mission chains as they open. Some jobs require a specific protagonist. Use the in-game counter for the eight qualifying stranger strands; not every character chain counts.' },
-  { id: 'challenges', title: 'Activities & challenges', short: 'Challenges', detail: 'Mix races, range practice, stunts, and activities into your travels. Aim beyond the trophy minimums: 300 stunts, 70 challenges, and all 42 drone races contribute to 100% completion.' },
+  { id: 'characters', title: 'Character strands', short: 'Characters', detail: 'Follow character texts and optional mission chains as they open. Some jobs require a specific protagonist. In Chapter 3, follow Yasmani’s missions for the Snap Gun needed for an undetected jewelry robbery. In Chapter 4, complete the optional bank-vault unlock mission. Use the in-game counter for the eight qualifying stranger strands; not every character chain counts.' },
+  { id: 'challenges', title: 'Activities & challenges', short: 'Challenges', detail: 'Mix races, range practice, stunts, and activities into your travels. Aim beyond the trophy minimums: 300 stunts, 70 of 80 challenges, and all 42 drone races contribute to 100% completion. Earn all 42 shooting-range gold medals across 12 ranges and finish Bret’s 15 hunting tasks. The completion checklist needs 15 of 18 meditations, but the meditation trophy needs the full counter of 18; protect the early Chapter 1 invitation.' },
   { id: 'collections', title: 'Explore & collect', short: 'Collections', detail: 'Finish three card sets, register 100 WAiNK It locations, and scan 100 vehicle models. Continue to 200 vehicle models for 100%, and use flights to clear remaining map fog.' },
-  { id: 'misc', title: 'The final sweep', short: 'Miscellaneous', detail: 'Use post-story free roam to finish robberies, purchases, partner activities, and the remaining checklist. Open Progress → Stats → 100% Completion for the authoritative in-game requirements. Earn the other 54 trophies to claim platinum.' },
+  { id: 'misc', title: 'The final sweep', short: 'Miscellaneous', detail: 'Use post-story free roam to finish robberies, purchases, partner activities, and the remaining checklist. For 100%, escape from all 8 bank vault robberies and complete all 39 gang operations, beyond the trophy minimums of 5 vaults and one operation from each of the 9 gangs. Find the underwater discoveries too. After the story, open Progress → Stats → 100% Completion for the authoritative requirements; earlier progress already counts. Reaching 100% is one requirement: earn all other 54 trophies to claim platinum.' },
 ];
 
 export const DEFAULT_PREFS = { protected: true, view: 'grid', sort: 'recommended' };
 const normalizeName = (value) => String(value).replace(/[’‘]/g, "'").replace(/\.$/, '').toLowerCase();
 
+/** Check whether a trophy's details should be hidden from the current view. */
 export function isConcealed(trophy, state) {
   return state.prefs.protected && trophy.hidden && !state.earned.has(trophy.id) && !state.revealed.has(trophy.id);
 }
 
+/** Summarize earned trophy counts and points. */
+export function getTrophyProgress(trophies, earned) {
+  let count = 0;
+  let points = 0;
+  for (const trophy of trophies) {
+    if (!earned.has(trophy.id)) continue;
+    count++;
+    points += trophy.points;
+  }
+  return {
+    count,
+    points,
+    remaining: trophies.length - count,
+    percent: trophies.length ? count / trophies.length * 100 : 0,
+  };
+}
+
+/** Build phase totals and completion status for the roadmap. */
+export function getRoadmapSteps(trophies, earned) {
+  const steps = PHASES.map((phase, index) => ({ ...phase, number: index + 1, total: 0, count: 0 }));
+  const stepsByPhase = new Map(steps.map(step => [step.id, step]));
+  const counted = new Set();
+  for (const trophy of trophies) {
+    const step = stepsByPhase.get(trophy.phase);
+    if (!step || counted.has(trophy.id)) continue;
+    counted.add(trophy.id);
+    step.total++;
+    if (earned.has(trophy.id)) step.count++;
+  }
+  return steps.map(step => ({ ...step, complete: step.total > 0 && step.count === step.total }));
+}
+
+/** Keep platinum earned only when every other trophy is earned. */
 export function reconcilePlatinum(earned, trophies) {
   const platinum = trophies.find(t => t.tier === 'platinum');
   if (!platinum) return earned;
@@ -26,6 +60,7 @@ export function reconcilePlatinum(earned, trophies) {
   return earned;
 }
 
+/** Validate a backup and convert its progress into current application state. */
 export function parseProgress(input, trophies) {
   const legacy = Array.isArray(input);
   if (!legacy && (!input || typeof input !== 'object' || input.version !== 1 || input.game !== 'Grand Theft Auto VI')) {
@@ -58,10 +93,12 @@ export function parseProgress(input, trophies) {
   return { earned: reconcilePlatinum(earned, trophies), revealed, prefs };
 }
 
+/** Create a timestamped export of progress, reveals, and preferences. */
 export function makeBackup(state) {
   return { version: 1, game: 'Grand Theft Auto VI', exportedAt: new Date().toISOString(), earned: [...state.earned], revealed: [...state.revealed], preferences: { ...state.prefs } };
 }
 
+/** Filter and sort trophies according to the current view state. */
 export function selectTrophies(trophies, state) {
   const query = state.query.trim().toLowerCase();
   const selected = trophies.filter(t => {

@@ -6,13 +6,12 @@
 // vendor/makefun-frontend.ts as it is. The scorer runs its own copy of buildDossier on the submitted app/ and
 // screenshots/ with the gate's caps. It requires dossier.json to match the resulting canonical JSON byte for byte.
 //
-// Only the plumbing, not a winner: a plain checklist of the 55 trophies with a one-line hint each. Write a real guide
-// for every trophy in your own words, a roadmap to the platinum, filters and a spoiler setting in app/, put 3 or 4 PNG
-// or JPEG screenshots of it in screenshots/ (the first by name is the cover; shots.json says which views this
-// starter's were taken of), and run it.
+// The Leonida Ledger includes guides for all 55 trophies, a platinum roadmap, checklist filters, and spoiler controls.
+// The first screenshot by filename is the cover. shots.json describes the captured views.
+// Checklist progress stays in browser storage and can be exported as a JSON backup.
 //
 // Serve it locally with `node serve.ts`, then open http://localhost:8080.
-// Set MAKEFUN_OUTPUT_DIR to use a local output directory outside the grader's container.
+// For local runs, set MAKEFUN_OUTPUT_DIR to choose where the submission files are written.
 //   mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
 
 import { cpSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
@@ -37,4 +36,4 @@ writeFileSync(
   buildDossier(out, { text_max_bytes: 163840, screenshots: { max: 4, max_bytes: 262144 }, app_max_files: 993, app_max_bytes: 50331648 }),
 );
 
-// dossier.json is written with writeFileSync so the entry's summary lands on disk in one atomic call before the program exits.
+// Writing the dossier synchronously ensures the scorer can read the finished summary when this process exits.

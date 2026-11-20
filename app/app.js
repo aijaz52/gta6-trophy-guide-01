@@ -1,4 +1,4 @@
-import { STORAGE_KEY, LEGACY_KEY, PHASES, DEFAULT_PREFS, isConcealed, reconcilePlatinum, parseProgress, makeBackup, selectTrophies } from './model.js';
+import { STORAGE_KEY, LEGACY_KEY, PHASES, DEFAULT_PREFS, getTrophyProgress, getRoadmapSteps, isConcealed, reconcilePlatinum, parseProgress, makeBackup, selectTrophies } from './model.js';
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -62,16 +62,15 @@ function tierSymbol() {
 }
 
 function renderSummary() {
-  const count = state.earned.size;
-  const percent = Math.round(count / trophies.length * 100);
+  const { count, points, remaining, percent } = getTrophyProgress(trophies, state.earned);
+  const roundedPercent = Math.round(percent);
   $('#earned-total').textContent = count;
-  $('#progress-percent').innerHTML = `${percent}<small>%</small>`;
-  $('#progress-ring').style.setProperty('--progress', `${count / trophies.length * 100}%`);
-  $('#progress-ring').setAttribute('aria-label', `${percent}% complete`);
-  $('#progress-caption').textContent = count === 55 ? 'Leonida Legend. Every last one is yours.' : count === 0 ? 'A fresh start. A whole state of possibilities.' : `${55 - count} more little victories on the road to platinum.`;
+  $('#progress-percent').innerHTML = `${roundedPercent}<small>%</small>`;
+  $('#progress-ring').style.setProperty('--progress', `${percent}%`);
+  $('#progress-ring').setAttribute('aria-label', `${roundedPercent}% complete`);
+  $('#progress-caption').textContent = count === 0 ? 'A fresh start. A whole state of possibilities.' : remaining === 0 ? 'Leonida Legend. Every last one is yours.' : `${remaining} more little victories on the road to platinum.`;
   $('#earned-count').textContent = count;
   $('#nav-earned-count').textContent = count;
-  const points = trophies.reduce((total, t) => total + (state.earned.has(t.id) ? t.points : 0), 0);
   $('#gamerscore').textContent = points.toLocaleString('en-US');
   $('#gamerscore-fill').style.width = `${points / 10}%`;
   $('#story-count').textContent = trophies.filter(t => t.story).length;
@@ -81,46 +80,87 @@ function renderSummary() {
     const earned = group.filter(t => state.earned.has(t.id)).length;
     return `<button class="tier-total" data-tier="${tier}" aria-pressed="${state.tier === tier}" aria-label="${escape(tier)}: ${earned} of ${group.length} earned. Filter ${escape(tier)} trophies.">${tierSymbol()}<strong>${earned}<span> / ${group.length}</span></strong><span class="tier-name">${tier}</span></button>`;
   }).join('');
-  $('#timeline').innerHTML = PHASES.map((phase, index) => {
-    const group = trophies.filter(t => t.phase === phase.id);
-    const count = group.filter(t => state.earned.has(t.id)).length;
-    const complete = count === group.length;
-    return `<button class="timeline-stage ${complete ? 'is-complete' : ''}" data-phase="${phase.id}" aria-pressed="${state.phase === phase.id}" aria-label="${phase.title}: ${count} of ${group.length} trophies. Filter this stage."><span class="stage-number">${complete ? '✓' : `0${index + 1}`}</span><span class="stage-copy"><span class="stage-title">${phase.short}</span><span class="stage-count">${count} / ${group.length} earned</span></span></button>`;
+  $('#timeline').innerHTML = getRoadmapSteps(trophies, state.earned).map(({ id, title, short, number, count, total, complete }) => {
+    return `<button class="timeline-stage ${complete ? 'is-complete' : ''}" data-phase="${id}" aria-pressed="${state.phase === id}" aria-label="${title}: ${count} of ${total} trophies. Filter this stage."><span class="stage-number">${complete ? '✓' : String(number).padStart(2, '0')}</span><span class="stage-copy"><span class="stage-title">${short}</span><span class="stage-count">${count} / ${total} earned</span></span></button>`;
   }).join('');
 }
 
-function cardMarkup(t) {
-  const concealed = isConcealed(t, state);
-  const earned = state.earned.has(t.id);
-  const name = concealed ? 'Hidden trophy' : t.name;
-  const description = concealed ? 'A story still waiting to be told. Reveal when you’re ready.' : t.description;
+function cardTags(trophy, { earned, concealed, platinum }) {
   const tags = [];
   if (earned) tags.push('<span class="tag earned-tag">✓ EARNED</span>');
-  if (t.missable) tags.push('<span class="tag warning">! POTENTIALLY MISSABLE</span>');
-  if (t.story) tags.push('<span class="tag story-tag">STORY</span>');
-  if (t.hidden) tags.push('<span class="tag hidden-tag">HIDDEN</span>');
-  if (!t.hidden && !t.story && !t.missable && !earned) tags.push(`<span class="tag">${t.tier === 'platinum' ? 'THE ULTIMATE GOAL' : t.category.toUpperCase()}</span>`);
-  if (t.uncertainty && !concealed && !t.missable && t.tier !== 'platinum') tags.push('<span class="tag warning">SOURCE NOTE</span>');
-  const points = t.tier === 'platinum' ? 'MYTHIC' : `${t.points} G`;
-  return `<article class="trophy-card ${earned ? 'earned' : ''} ${concealed ? 'is-hidden' : ''}" data-id="${t.id}" data-tier="${t.tier}">
-    <div class="card-top"><span class="trophy-emblem">${concealed ? '<span class="hidden-symbol" aria-hidden="true">?</span>' : tierSymbol()}</span><span class="tier-badge">${t.tier}</span><span class="points">${points}</span><label class="earned-check"><input type="checkbox" data-earn="${t.id}" ${earned ? 'checked' : ''} aria-label="Mark ${escape(name)} as ${earned ? 'not earned' : 'earned'}"></label></div>
-    <button class="card-guide-button" data-detail="${t.id}" aria-label="Open guide: ${escape(name)}"><h3>${escape(name)}</h3><p class="card-description">${escape(description)}</p></button>
-    <div class="card-tags">${tags.join('')}</div>
-    <div class="card-bottom"><span class="category-label">${concealed ? 'Spoiler protected' : t.tier === 'platinum' ? '54 trophies. One legend.' : t.chapter ? `CHAPTER ${t.chapter} ONWARD` : 'TAKE IT AT YOUR PACE'}</span>${concealed ? `<button class="reveal-card" data-reveal="${t.id}">Reveal trophy <span aria-hidden="true">↗</span></button>` : `<button data-detail="${t.id}">View guide <span aria-hidden="true">↗</span></button>`}</div>
+  if (trophy.missable) tags.push('<span class="tag warning">! POTENTIALLY MISSABLE</span>');
+  if (trophy.story) tags.push('<span class="tag story-tag">STORY</span>');
+  if (trophy.hidden) tags.push('<span class="tag hidden-tag">HIDDEN</span>');
+  if (tags.length === 0) {
+    const category = platinum ? 'THE ULTIMATE GOAL' : trophy.category.toUpperCase();
+    tags.push(`<span class="tag">${escape(category)}</span>`);
+  }
+  if (trophy.uncertainty && !concealed && !trophy.missable && !platinum) {
+    tags.push('<span class="tag warning">SOURCE NOTE</span>');
+  }
+  return tags.join('');
+}
+
+function cardMarkup(trophy) {
+  const { id, tier, chapter } = trophy;
+  const concealed = isConcealed(trophy, state);
+  const earned = state.earned.has(id);
+  const platinum = tier === 'platinum';
+  const name = escape(concealed ? 'Hidden trophy' : trophy.name);
+  const description = escape(concealed ? 'A story still waiting to be told. Reveal when you’re ready.' : trophy.description);
+  const emblem = concealed ? '<span class="hidden-symbol" aria-hidden="true">?</span>' : tierSymbol();
+  const points = platinum ? 'MYTHIC' : `${trophy.points} G`;
+  let categoryLabel = 'TAKE IT AT YOUR PACE';
+  if (concealed) categoryLabel = 'Spoiler protected';
+  else if (platinum) categoryLabel = '54 trophies. One legend.';
+  else if (chapter) categoryLabel = `CHAPTER ${chapter} ONWARD`;
+  const guideAction = concealed
+    ? `<button class="reveal-card" data-reveal="${id}">Reveal trophy <span aria-hidden="true">↗</span></button>`
+    : `<button data-detail="${id}">View guide <span aria-hidden="true">↗</span></button>`;
+
+  return `<article class="trophy-card ${earned ? 'earned' : ''} ${concealed ? 'is-hidden' : ''}" data-id="${id}" data-tier="${tier}">
+    <div class="card-top">
+      <span class="trophy-emblem">${emblem}</span>
+      <span class="tier-badge">${tier}</span>
+      <span class="points">${points}</span>
+      <label class="earned-check">
+        <input type="checkbox" data-earn="${id}" ${earned ? 'checked' : ''} aria-label="Mark ${name} as ${earned ? 'not earned' : 'earned'}">
+      </label>
+    </div>
+    <button class="card-guide-button" data-detail="${id}" aria-label="Open guide: ${name}">
+      <h3>${name}</h3><p class="card-description">${description}</p>
+    </button>
+    <div class="card-tags">${cardTags(trophy, { earned, concealed, platinum })}</div>
+    <div class="card-bottom"><span class="category-label">${categoryLabel}</span>${guideAction}</div>
   </article>`;
 }
 
 function renderCollection() {
+  const grid = $('#trophy-grid');
+  const focused = document.activeElement;
+  const focusedId = focused?.dataset.earn;
+  const focusedIndex = focusedId ? [...grid.querySelectorAll('[data-earn]')].indexOf(focused) : -1;
   const results = selectTrophies(trophies, state);
-  $('#trophy-grid').classList.toggle('list-view', state.prefs.view === 'list');
-  $('#trophy-grid').innerHTML = results.map(cardMarkup).join('');
-  $('#trophy-grid').setAttribute('aria-busy', 'false');
+  grid.classList.toggle('list-view', state.prefs.view === 'list');
+  grid.innerHTML = results.map(cardMarkup).join('');
+  grid.setAttribute('aria-busy', 'false');
   const phase = PHASES.find(p => p.id === state.phase);
-  $('#results-count').textContent = `Showing ${results.length} of 55 trophies${phase ? ` · ${phase.title}` : ''}${state.filter === 'hidden' ? ' · Editorial spoiler flags' : ''}`;
+  $('#results-count').textContent = `Showing ${results.length} of ${trophies.length} trophies${phase ? ` · ${phase.title}` : ''}${state.filter === 'hidden' ? ' · Editorial spoiler flags' : ''}`;
   $('#empty-state').hidden = results.length > 0;
   const hasQuery = state.query.trim().length > 0;
   $('#empty-description').textContent = hasQuery && state.prefs.protected ? 'Try another keyword. Unrevealed hidden names and guides are excluded from search.' : state.filter === 'earned' ? 'Your journey starts with the first checkmark. Mark a trophy earned to see it here.' : 'Try a different search or clear your filters.';
   $('#clear-filters').hidden = state.filter === 'all' && state.tier === 'all' && !state.phase && !hasQuery;
+  renderCollectionControls();
+
+  if (focusedIndex >= 0) {
+    const checkboxes = [...grid.querySelectorAll('[data-earn]')];
+    const sameTrophy = checkboxes.find(checkbox => checkbox.dataset.earn === focusedId);
+    const nextFocus = sameTrophy ?? checkboxes[Math.min(focusedIndex, checkboxes.length - 1)] ?? $('#empty-clear');
+    nextFocus.focus({ preventScroll: nextFocus === sameTrophy && checkboxes[focusedIndex] === sameTrophy });
+  }
+}
+
+function renderCollectionControls() {
   $$('.filter-tab').forEach(button => {
     const active = state.filter === button.dataset.filter;
     button.classList.toggle('active', active);
@@ -158,14 +198,12 @@ function setEarned(id, next) {
   if (!t) return;
   if (t.tier === 'platinum' && next && !trophies.every(other => other.id === id || state.earned.has(other.id))) {
     renderCollection();
-    restoreCardFocus(id, '[data-earn]');
     notify('The platinum unlocks automatically when you earn the other 54 trophies.');
     return;
   }
   // Platinum is a derived completion reward and cannot be unchecked on its own.
   if (t.tier === 'platinum' && !next && state.earned.size === 55) {
     renderCollection();
-    restoreCardFocus(id, '[data-earn]');
     notify('Platinum follows your collection. Uncheck another trophy to remove it.');
     return;
   }
@@ -228,7 +266,8 @@ function renderDetail(id) {
 function openSources() {
   activeDetail = null;
   $('#dialog-eyebrow').textContent = 'A NOTE FROM THE LEDGER';
-  $('#detail-content').innerHTML = `<h2 id="detail-title">A guide with<br>its sources in view.</h2><div class="detail-prose"><p>This offline fan companion follows the supplied <strong>TROPHY_SOURCE_NOTES.txt</strong>, dated November 18, 2026. It contains 55 entries: 1 platinum, 2 gold, 6 silver, and 46 bronze. The notes have not been independently verified.</p><h3>The source trail</h3>${Object.values(data.sources).map(source => `<div class="source-citation"><strong>${escape(source.name)}</strong><code>${escape(source.url)}</code><small>${escape(source.context)}</small></div>`).join('')}<h3>What is known, and what is inferred</h3><p>${escape(data.notes.descriptions)}</p><p>${escape(data.notes.hidden)}</p><p>${escape(data.notes.missable)}</p><p>${escape(data.notes.points)}</p><p>${escape(data.notes.rarity)}</p><h3>A careful route to platinum</h3><p>The notes attribute an approximately <strong>200-hour</strong> completion estimate to GTABase. They also report <strong>no mission replay, no difficulty selection, and no New Game+</strong>. Free roam continues after the story. Turn cheats off, accept the early meditation invitation, and use the in-game completion checklist for the final sweep.</p><h3>Your data belongs to you</h3><p>Checkmarks, individual reveals, and display preferences stay in this browser’s localStorage. Export a JSON backup to move them to another device. Clearing browser data removes this device’s copy. No analytics, accounts, remote fonts, or remote requests are used.</p><p>The app also caches its own static files for offline reloads where service workers are supported. Initial loading uses only this local server.</p><p><strong>Keyboard:</strong> press / to search, Tab to move between controls, Space to check a trophy, and Escape to close a guide. Revealing a trophy affects only that trophy; the spoiler switch controls the whole collection.</p></div>`;
+  $('#detail-content').innerHTML = `<h2 id="detail-title">A guide with<br>its sources in view.</h2><div class="detail-prose"><p>This offline fan companion follows the supplied <strong>TROPHY_SOURCE_NOTES.txt</strong>, dated November 18, 2026. It contains 55 entries: 1 platinum, 2 gold, 6 silver, and 46 bronze. The notes have not been independently verified.</p><h3>The source trail</h3>${Object.values(data.sources).map(source => `<div class="source-citation"><strong>${escape(source.name)}</strong><code>${escape(source.url)}</code><small>${escape(source.context)}</small></div>`).join('')}<h3>What is known, and what is inferred</h3><p>${escape(data.notes.descriptions)}</p><p>${escape(data.notes.hidden)}</p><p>${escape(data.notes.missable)}</p><p>${escape(data.notes.points)}</p><p>${escape(data.notes.rarity)}</p><h3>A careful route to platinum</h3><p>The notes attribute an approximately <strong>200-hour</strong> completion estimate to GTABase. They also report <strong>no mission replay, no difficulty selection, and no New Game+</strong>. Free roam continues after the story. Turn cheats off, accept the early meditation invitation, and use the in-game completion checklist for the final sweep.</p><h3>Your data belongs to you</h3><p>Checkmarks, individual reveals, and display preferences stay in this browser’s localStorage. Export a JSON backup to move them to another device. Clearing browser data removes this device’s copy. No analytics, accounts, remote fonts, or remote requests are used.</p><p>The app also caches its own static files for offline reloads where service workers are supported. Initial loading uses only this local server.</p>
+    <p><strong>Keyboard</strong> — Press / to search and Tab to move between controls. On a trophy checkbox, use the arrow keys to move through the displayed checklist and Space to toggle the focused trophy. Press Escape to close a guide.</p><p>Revealing a trophy affects only that trophy. The spoiler switch controls the whole collection.</p></div>`;
   if (!$('#detail-dialog').open) openDialog();
 }
 
@@ -285,6 +324,21 @@ function applyImport(mode) {
   if (storageAvailable) notify(`Progress ${mode === 'merge' ? 'merged' : 'replaced'} and saved. ${state.earned.size} trophies earned.`);
 }
 
+function moveChecklistFocus(event) {
+  if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+  const { key, target, currentTarget } = event;
+  if (!target.matches('[data-earn]')) return;
+
+  let step;
+  if (key === 'ArrowDown' || key === 'ArrowRight') step = 1;
+  else if (key === 'ArrowUp' || key === 'ArrowLeft') step = -1;
+  else return;
+
+  event.preventDefault();
+  const checkboxes = [...currentTarget.querySelectorAll('[data-earn]')];
+  checkboxes[checkboxes.indexOf(target) + step]?.focus();
+}
+
 function wireEvents() {
   $('.collection-tabs').addEventListener('click', event => {
     const button = event.target.closest('[data-filter]');
@@ -310,14 +364,15 @@ function wireEvents() {
     if (activeDetail) renderDetail(activeDetail);
     notify(state.prefs.protected ? 'Spoiler protection on. Earned and individually revealed trophies stay visible.' : 'Spoiler protection off. All trophy names and guides are visible.');
   });
-  $('#trophy-grid').addEventListener('change', event => {
+  const grid = $('#trophy-grid');
+  // Space uses the checkbox's native activation and reaches the same change handler as a click.
+  grid.addEventListener('keydown', moveChecklistFocus);
+  grid.addEventListener('change', event => {
     const input = event.target.closest('[data-earn]');
     if (!input) return;
-    const id = input.dataset.earn;
-    setEarned(id, input.checked);
-    restoreCardFocus(id, '[data-earn]');
+    setEarned(input.dataset.earn, input.checked);
   });
-  $('#trophy-grid').addEventListener('click', event => {
+  grid.addEventListener('click', event => {
     const detail = event.target.closest('[data-detail]');
     if (detail) openDetail(detail.dataset.detail);
     const revealButton = event.target.closest('[data-reveal]');
