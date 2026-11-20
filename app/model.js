@@ -11,6 +11,9 @@ export const PHASES = [
 ];
 
 export const DEFAULT_PREFS = { protected: true, view: 'grid', sort: 'recommended' };
+const recommendedRanks = new Map([
+  'positive-mental-attitude', 'vice-got-a-price', 'a-long-road', 'cunning-stunts', 'the-shootist', 'master-of-none',
+].map((id, index) => [id, index]));
 const normalizeName = (value) => String(value).replace(/[’‘]/g, "'").replace(/\.$/, '').toLowerCase();
 
 /** Check whether a trophy's details should be hidden from the current view. */
@@ -35,19 +38,29 @@ export function getTrophyProgress(trophies, earned) {
   };
 }
 
-/** Build phase totals and completion status for the roadmap. */
+/** Protect unfinished missables, then finish the earliest active stage before starting another. */
 export function getRoadmapSteps(trophies, earned) {
   const steps = PHASES.map((phase, index) => ({ ...phase, number: index + 1, total: 0, count: 0 }));
   const stepsByPhase = new Map(steps.map(step => [step.id, step]));
   const counted = new Set();
+  const urgentPhases = new Set();
   for (const trophy of trophies) {
     const step = stepsByPhase.get(trophy.phase);
     if (!step || counted.has(trophy.id)) continue;
     counted.add(trophy.id);
     step.total++;
     if (earned.has(trophy.id)) step.count++;
+    else if (trophy.missable) urgentPhases.add(step.id);
   }
-  return steps.map(step => ({ ...step, complete: step.total > 0 && step.count === step.total }));
+  const nextStep = steps.find(step => urgentPhases.has(step.id))
+    ?? steps.find(step => step.count > 0 && step.count < step.total)
+    ?? steps.find(step => step.count < step.total);
+  return steps.map(step => ({
+    ...step,
+    remaining: step.total - step.count,
+    complete: step.total > 0 && step.count === step.total,
+    current: step === nextStep,
+  }));
 }
 
 /** Keep platinum earned only when every other trophy is earned. */
@@ -117,8 +130,7 @@ export function selectTrophies(trophies, state) {
   });
   const order = new Map(trophies.map((t, i) => [t.id, i]));
   const tiers = { platinum: 0, gold: 1, silver: 2, bronze: 3 };
-  const priority = ['positive-mental-attitude', 'vice-got-a-price', 'a-long-road', 'cunning-stunts', 'the-shootist', 'master-of-none'];
-  const recommended = (t) => priority.includes(t.id) ? priority.indexOf(t.id) : order.get(t.id) + priority.length;
+  const recommended = (t) => recommendedRanks.get(t.id) ?? (order.get(t.id) + recommendedRanks.size);
   const displayName = (t) => isConcealed(t, state) ? 'Hidden trophy' : t.name;
   return selected.sort((a, b) => {
     switch (state.prefs.sort) {

@@ -8,10 +8,10 @@
 //
 // The Leonida Ledger includes guides for all 55 trophies, a platinum roadmap, checklist filters, and spoiler controls.
 // The first screenshot by filename is the cover. shots.json describes the captured views.
-// Checklist progress stays in browser storage and can be exported as a JSON backup.
+// Export the local checklist as JSON whenever you want a portable copy.
 //
 // Serve it locally with `node serve.ts`, then open http://localhost:8080.
-// For local runs, set MAKEFUN_OUTPUT_DIR to choose where the submission files are written.
+// MAKEFUN_OUTPUT_DIR selects the destination for a local copy of the app and its dossier.
 //   mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
 
 import { cpSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
@@ -21,6 +21,7 @@ import { buildDossier } from './vendor/makefun-frontend.ts';
 
 const here = fileURLToPath(new URL('.', import.meta.url));
 const out = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
+const dossierPath = join(out, 'dossier.json');
 
 mkdirSync(out, { recursive: true });
 cpSync(join(here, 'app'), join(out, 'app'), { recursive: true });
@@ -30,10 +31,10 @@ if (existsSync(join(here, 'screenshots'))) cpSync(join(here, 'screenshots'), joi
 // The scorer's own caps (reference/gate.json): only text_max_bytes shapes the bytes; the others refuse an entry the
 // scorer would refuse (more than 4 screenshots or one over 256 KiB; more than 993 files and directories in app/ or
 // 48 MiB of app files: app/ counts beside /output's own 1000-entry cap, its screenshots/ and dossier.json).
-// Use writeFileSync so the dossier write finishes before the entrypoint returns.
+// Build the dossier from the copied output so its inventory describes the files being submitted.
 writeFileSync(
-  join(out, 'dossier.json'),
+  dossierPath,
   buildDossier(out, { text_max_bytes: 163840, screenshots: { max: 4, max_bytes: 262144 }, app_max_files: 993, app_max_bytes: 50331648 }),
 );
 
-// Writing the dossier synchronously ensures the scorer can read the finished summary when this process exits.
+// A synchronous write leaves the complete dossier ready for the scorer when Node exits.

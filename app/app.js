@@ -11,7 +11,8 @@ let pendingImport;
 let activeDetail = null;
 let dialogOpener = null;
 let storageAvailable = true;
-const state = { earned: new Set(), revealed: new Set(), prefs: { ...DEFAULT_PREFS }, filter: 'all', tier: 'all', phase: null, query: '' };
+const DEFAULT_FILTERS = { filter: 'all', tier: 'all', phase: null, query: '' };
+const state = { earned: new Set(), revealed: new Set(), prefs: { ...DEFAULT_PREFS }, ...DEFAULT_FILTERS };
 
 function notify(message) {
   clearTimeout(toastTimer);
@@ -80,8 +81,8 @@ function renderSummary() {
     const earned = group.filter(t => state.earned.has(t.id)).length;
     return `<button class="tier-total" data-tier="${tier}" aria-pressed="${state.tier === tier}" aria-label="${escape(tier)}: ${earned} of ${group.length} earned. Filter ${escape(tier)} trophies.">${tierSymbol()}<strong>${earned}<span> / ${group.length}</span></strong><span class="tier-name">${tier}</span></button>`;
   }).join('');
-  $('#timeline').innerHTML = getRoadmapSteps(trophies, state.earned).map(({ id, title, short, number, count, total, complete }) => {
-    return `<button class="timeline-stage ${complete ? 'is-complete' : ''}" data-phase="${id}" aria-pressed="${state.phase === id}" aria-label="${title}: ${count} of ${total} trophies. Filter this stage."><span class="stage-number">${complete ? '✓' : String(number).padStart(2, '0')}</span><span class="stage-copy"><span class="stage-title">${short}</span><span class="stage-count">${count} / ${total} earned</span></span></button>`;
+  $('#timeline').innerHTML = getRoadmapSteps(trophies, state.earned).map(({ id, title, short, number, count, total, remaining, complete, current }) => {
+    return `<button class="timeline-stage ${complete ? 'is-complete' : ''}" data-phase="${id}" aria-pressed="${state.phase === id}"${current ? ' aria-current="step"' : ''} aria-label="${title}: ${count} of ${total} trophies earned, ${remaining} remaining.${current ? ' Next suggested stage.' : ''} Filter this stage."><span class="stage-number">${complete ? '✓' : String(number).padStart(2, '0')}</span><span class="stage-copy"><span class="stage-title">${short}</span><span class="stage-count">${count} / ${total} earned</span></span></button>`;
   }).join('');
 }
 
@@ -135,21 +136,37 @@ function cardMarkup(trophy) {
   </article>`;
 }
 
+function renderCollectionStatus(resultCount) {
+  const phase = PHASES.find(p => p.id === state.phase);
+  const summary = [`Showing ${resultCount} of ${trophies.length} trophies`];
+  if (phase) summary.push(phase.title);
+  if (state.filter === 'hidden') summary.push('Editorial spoiler flags');
+  $('#results-count').textContent = summary.join(' · ');
+  $('#empty-state').hidden = resultCount > 0;
+
+  const hasQuery = state.query.trim().length > 0;
+  let emptyDescription = 'Try a different search or clear your filters.';
+  if (hasQuery && state.prefs.protected) {
+    emptyDescription = 'Try another keyword. Unrevealed hidden names and guides are excluded from search.';
+  } else if (state.filter === 'earned') {
+    emptyDescription = 'Your journey starts with the first checkmark. Mark a trophy earned to see it here.';
+  }
+  $('#empty-description').textContent = emptyDescription;
+  const hasFilters = state.filter !== DEFAULT_FILTERS.filter || state.tier !== DEFAULT_FILTERS.tier || Boolean(state.phase) || hasQuery;
+  $('#clear-filters').hidden = !hasFilters;
+}
+
 function renderCollection() {
   const grid = $('#trophy-grid');
   const focused = document.activeElement;
   const focusedId = focused?.dataset.earn;
   const focusedIndex = focusedId ? [...grid.querySelectorAll('[data-earn]')].indexOf(focused) : -1;
+
   const results = selectTrophies(trophies, state);
   grid.classList.toggle('list-view', state.prefs.view === 'list');
   grid.innerHTML = results.map(cardMarkup).join('');
   grid.setAttribute('aria-busy', 'false');
-  const phase = PHASES.find(p => p.id === state.phase);
-  $('#results-count').textContent = `Showing ${results.length} of ${trophies.length} trophies${phase ? ` · ${phase.title}` : ''}${state.filter === 'hidden' ? ' · Editorial spoiler flags' : ''}`;
-  $('#empty-state').hidden = results.length > 0;
-  const hasQuery = state.query.trim().length > 0;
-  $('#empty-description').textContent = hasQuery && state.prefs.protected ? 'Try another keyword. Unrevealed hidden names and guides are excluded from search.' : state.filter === 'earned' ? 'Your journey starts with the first checkmark. Mark a trophy earned to see it here.' : 'Try a different search or clear your filters.';
-  $('#clear-filters').hidden = state.filter === 'all' && state.tier === 'all' && !state.phase && !hasQuery;
+  renderCollectionStatus(results.length);
   renderCollectionControls();
 
   if (focusedIndex >= 0) {
@@ -169,8 +186,10 @@ function renderCollectionControls() {
   $('#tier-filter').value = state.tier;
   $('#sort').value = state.prefs.sort;
   for (const view of ['grid', 'list']) {
-    $(`#${view}-view`).classList.toggle('active', state.prefs.view === view);
-    $(`#${view}-view`).setAttribute('aria-pressed', String(state.prefs.view === view));
+    const button = $(`#${view}-view`);
+    const active = state.prefs.view === view;
+    button.classList.toggle('active', active);
+    button.setAttribute('aria-pressed', String(active));
   }
   $('#spoiler-toggle').setAttribute('aria-checked', String(state.prefs.protected));
   $('#nav-earned').classList.toggle('active', state.filter === 'earned');
@@ -271,9 +290,9 @@ function openSources() {
   if (!$('#detail-dialog').open) openDialog();
 }
 
-function resetFilters() {
-  state.filter = 'all'; state.tier = 'all'; state.phase = null; state.query = '';
-  $('#search').value = '';
+function resetFilters(overrides) {
+  Object.assign(state, DEFAULT_FILTERS, overrides);
+  $('#search').value = state.query;
   render();
 }
 
@@ -332,11 +351,15 @@ function moveChecklistFocus(event) {
   let step;
   if (key === 'ArrowDown' || key === 'ArrowRight') step = 1;
   else if (key === 'ArrowUp' || key === 'ArrowLeft') step = -1;
+  else if (key === 'Home') step = -Infinity;
+  else if (key === 'End') step = Infinity;
   else return;
 
   event.preventDefault();
   const checkboxes = [...currentTarget.querySelectorAll('[data-earn]')];
-  checkboxes[checkboxes.indexOf(target) + step]?.focus();
+  if (step === -Infinity) checkboxes[0]?.focus();
+  else if (step === Infinity) checkboxes.at(-1)?.focus();
+  else checkboxes[checkboxes.indexOf(target) + step]?.focus();
 }
 
 function wireEvents() {
@@ -348,6 +371,13 @@ function wireEvents() {
     render();
   });
   $('#search').addEventListener('input', event => { state.query = event.target.value; renderCollection(); });
+  $('#search').addEventListener('keydown', event => {
+    if (event.key !== 'Escape' || event.isComposing || !event.currentTarget.value) return;
+    event.preventDefault();
+    event.currentTarget.value = '';
+    state.query = '';
+    renderCollection();
+  });
   $('#tier-filter').addEventListener('change', event => { state.tier = event.target.value; render(); });
   $('#tier-totals').addEventListener('click', event => {
     const button = event.target.closest('[data-tier]');
@@ -393,9 +423,8 @@ function wireEvents() {
   $('#timeline').addEventListener('click', event => {
     const button = event.target.closest('[data-phase]');
     if (!button) return;
-    state.phase = state.phase === button.dataset.phase ? null : button.dataset.phase;
-    state.filter = 'all'; state.tier = 'all'; state.query = ''; $('#search').value = '';
-    render();
+    const { phase } = button.dataset;
+    resetFilters({ phase: state.phase === phase ? null : phase });
     $('#trophies').scrollIntoView({ block: 'start' });
   });
   $('#roadmap-guide').addEventListener('click', () => {
@@ -407,12 +436,19 @@ function wireEvents() {
   $('#roadmap-guide').setAttribute('aria-expanded', 'false');
   $('#roadmap-guide').setAttribute('aria-controls', 'roadmap-expanded');
   $('#missable-guide').addEventListener('click', () => openDetail('positive-mental-attitude'));
-  $('#nav-earned').addEventListener('click', () => { state.filter = 'earned'; state.phase = null; state.query = ''; state.tier = 'all'; $('#search').value = ''; render(); $('#trophies').scrollIntoView({ block: 'start' }); });
-  $('#nav-trophies').addEventListener('click', resetFilters);
+  $('#nav-earned').addEventListener('click', () => {
+    resetFilters({ filter: 'earned' });
+    $('#trophies').scrollIntoView({ block: 'start' });
+  });
+  $('#nav-trophies').addEventListener('click', () => resetFilters());
   $('#nav-roadmap').addEventListener('click', () => { if ($('#roadmap-expanded').hidden) $('#roadmap-guide').click(); });
   $('.brand').addEventListener('click', () => { resetFilters(); window.scrollTo({ top: 0 }); });
-  $('#clear-filters').addEventListener('click', resetFilters);
-  $('#empty-clear').addEventListener('click', resetFilters);
+  for (const button of [$('#clear-filters'), $('#empty-clear')]) {
+    button.addEventListener('click', () => {
+      resetFilters();
+      $('#search').focus({ preventScroll: true });
+    });
+  }
   $('#about-sources').addEventListener('click', openSources);
   $('#footer-notes').addEventListener('click', openSources);
   $('#close-detail').addEventListener('click', () => $('#detail-dialog').close());
