@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#222632">
+  <meta name="description" content="Your offline road to the GTA VI platinum. Track 55 trophies, follow a spoiler-aware roadmap, and keep your progress on your device.">
+  <title>Leonida Ledger — GTA VI Trophy Guide & Tracker</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <aside class="sidebar" aria-label="Main navigation">
+    <a class="brand" href="#" aria-label="Leonida Ledger home">
+      <span class="brand-mark" aria-hidden="true">VI<span>✦</span></span>
+      <span class="brand-name">LEONIDA<span>THE TROPHY LEDGER</span></span>
+    </a>
+    <div class="sidebar-rule"></div>
+    <p class="nav-caption">YOUR NEXT GREAT ESCAPE</p>
+    <nav>
+      <a class="nav-link active" href="#trophies" id="nav-trophies"><span aria-hidden="true">▦</span> Trophy collection <span class="nav-count">55</span></a>
+      <a class="nav-link" href="#roadmap" id="nav-roadmap"><span aria-hidden="true">⌁</span> Platinum roadmap</a>
+      <button class="nav-link" id="nav-earned"><span aria-hidden="true">☑</span> Earned trophies <span class="nav-count" id="nav-earned-count">0</span></button>
+    </nav>
+    <div class="sidebar-note">
+      <span class="tiny-label">ONE STATE. ENDLESS STORIES.</span>
+      <div class="sidebar-vi" aria-hidden="true">VI</div>
+      <h2>Leave your mark<br>on Leonida.</h2>
+      <p>Every little victory.<br>All in one place.</p>
+      <span class="note-coordinate">25°46′ N &nbsp; 80°11′ W</span>
+    </div>
+    <div class="sidebar-bottom">
+      <div class="device-status"><span class="status-dot"></span><span>YOUR PROGRESS STAYS HERE<small>Saved locally. Always yours.</small></span></div>
+      <div class="backup-actions"><button id="export-progress"><span aria-hidden="true">↗</span> Export</button><button id="import-progress"><span aria-hidden="true">↙</span> Import</button></div>
+      <input id="import-file" type="file" accept="application/json,.json" hidden>
+      <button class="source-button" id="about-sources">Sources & guide notes <span aria-hidden="true">↗</span></button>
+      <span class="unofficial">AN UNOFFICIAL FAN COMPANION</span>
+    </div>
+  </aside>
+
+  <main id="main" tabindex="-1">
+    <header class="topbar">
+      <div class="breadcrumb">THE LEONIDA LEDGER <span>/</span> <strong>Trophy collection</strong></div>
+      <div class="topbar-tools">
+        <span class="offline-indicator" id="offline-status"><span class="status-dot"></span> LOCAL & PRIVATE</span>
+        <button class="spoiler-control" id="spoiler-toggle" type="button" role="switch" aria-checked="true" aria-label="Spoiler protection"><span class="spoiler-label">Spoiler protection</span><span class="switch" aria-hidden="true"></span></button>
+      </div>
+    </header>
+
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-scene" aria-hidden="true">
+        <div class="sun"></div><div class="horizon"></div>
+        <div class="skyline skyline-back"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="skyline skyline-front"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="palm palm-one"><b></b><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="palm palm-two"><b></b><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="scene-monogram">VI</div>
+        <div class="scene-caption">WELCOME TO LEONIDA <span>EST. 2026</span></div>
+      </div>
+      <div class="hero-copy">
+        <p class="eyebrow"><span></span> GRAND THEFT AUTO VI</p>
+        <h1 id="hero-title">The good life.<br><em>The full collection.</em></h1>
+        <p>55 trophies. One unforgettable journey.<br>Your road to becoming a Leonida Legend starts here.</p>
+        <a class="hero-cta" href="#trophies">Find your next trophy <span aria-hidden="true">↗</span></a>
+      </div>
+      <span class="hero-edition">THE COMPLETIONIST EDITION <span>№ 006</span></span>
+      <div class="hero-facts" aria-label="Platinum overview"><span>≈ 200 HOURS</span><span>1 PLAYTHROUGH</span><span>100% LEONIDA</span></div>
+    </section>
+
+    <section class="progress-panel" aria-label="Your trophy progress">
+      <div class="progress-overview">
+        <div class="progress-ring" id="progress-ring"><span id="progress-percent">0<small>%</small></span></div>
+        <div><p class="tiny-label">YOUR ROAD TO PLATINUM</p><h2><span id="earned-total">0</span> <span class="muted">/ 55 trophies</span></h2><p class="progress-caption" id="progress-caption">A fresh start. A whole state of possibilities.</p></div>
+      </div>
+      <div class="tier-totals" id="tier-totals" aria-label="Filter by trophy tier"></div>
+      <div class="gamerscore"><span class="tiny-label">XBOX GAMERSCORE</span><strong><span id="gamerscore">0</span><span> / 1,000 G</span></strong><div class="mini-track"><span id="gamerscore-fill"></span></div></div>
+    </section>
+
+    <section id="roadmap" class="roadmap-section" aria-labelledby="roadmap-title">
+      <div class="section-heading"><h2 id="roadmap-title">A little direction. A legendary finish.</h2><button class="text-button" id="roadmap-guide">The platinum plan <span aria-hidden="true">↗</span></button></div>
+      <div class="timeline" id="timeline" aria-label="Platinum roadmap stages"></div>
+      <div class="roadmap-expanded" id="roadmap-expanded" hidden></div>
+    </section>
+
+    <aside class="missable-alert"><span class="alert-icon" aria-hidden="true">!</span><p><strong>One moment you don’t want to miss.</strong> Accept the Chapter 1 meditation invitation. It may be your only missable trophy.</p><button id="missable-guide">Read the heads-up <span aria-hidden="true">↗</span></button></aside>
+
+    <section id="trophies" class="collection" aria-labelledby="collection-title">
+      <div class="collection-heading"><div><p class="tiny-label">THE CHECKLIST</p><h2 id="collection-title">Make every moment count<span>.</span></h2></div><span class="collection-total">ALL 55 TROPHIES <span aria-hidden="true">✦</span></span></div>
+      <div class="collection-tabs" role="group" aria-label="Filter trophies">
+        <button class="filter-tab active" data-filter="all" aria-pressed="true">All trophies <span>55</span></button>
+        <button class="filter-tab" data-filter="story" aria-pressed="false">Story <span id="story-count">12</span></button>
+        <button class="filter-tab" data-filter="hidden" aria-pressed="false">Hidden <span id="hidden-count">28</span></button>
+        <button class="filter-tab" data-filter="missable" aria-pressed="false">Missable <span>1</span></button>
+        <button class="filter-tab" data-filter="earned" aria-pressed="false">Earned <span id="earned-count">0</span></button>
+      </div>
+      <div class="collection-toolbar">
+        <label class="search-box"><span aria-hidden="true">⌕</span><input type="search" id="search" placeholder="Find a trophy, activity, or keyword…" autocomplete="off" aria-label="Search trophies"><kbd aria-hidden="true">/</kbd></label>
+        <label class="select-control"><span class="sr-only">Trophy tier</span><select id="tier-filter"><option value="all">All tiers</option><option value="platinum">Platinum</option><option value="gold">Gold</option><option value="silver">Silver</option><option value="bronze">Bronze</option></select></label>
+        <label class="select-control sort-control"><span class="sort-label">Sort:</span><select id="sort"><option value="recommended">Recommended</option><option value="source">Source order</option><option value="name">Name A–Z</option><option value="tier">Trophy tier</option><option value="points">Gamerscore</option><option value="unearned">Unearned first</option></select></label>
+        <div class="view-switch" role="group" aria-label="Trophy layout"><button id="grid-view" class="active" aria-label="Grid view" aria-pressed="true"><span aria-hidden="true">▦</span></button><button id="list-view" aria-label="List view" aria-pressed="false"><span aria-hidden="true">☰</span></button></div>
+      </div>
+      <div class="results-meta"><span id="results-count" role="status">Loading your collection…</span><button class="text-button" id="clear-filters" hidden>Clear filters ×</button></div>
+      <div id="trophy-grid" class="trophy-grid" aria-label="Trophy checklist" aria-busy="true"></div>
+      <div class="empty-state" id="empty-state" hidden><span aria-hidden="true">⌕</span><h3>No trophies on this stretch of road.</h3><p id="empty-description">Try a different search or clear your filters.</p><button id="empty-clear" class="primary-button">Show all trophies</button></div>
+      <div class="load-error" id="load-error" hidden role="alert"><h3>The collection couldn’t be loaded.</h3><p>Run <code>node serve.ts</code> and open <code>http://localhost:8080</code>, then reload.</p><button id="reload-app" class="primary-button">Try again</button></div>
+    </section>
+    <footer class="page-footer"><span>BUILT FOR THE LONG ROAD <span aria-hidden="true">✦</span> NO ACCOUNT. NO NOISE.</span><span>Source notes · Nov 18, 2026 <button id="footer-notes" aria-label="Read source notes and methodology">ⓘ</button></span></footer>
+  </main>
+
+  <dialog id="detail-dialog" class="detail-dialog" aria-labelledby="detail-title"><div class="detail-top"><span class="tiny-label" id="dialog-eyebrow">THE TROPHY FIELD GUIDE</span><button id="close-detail" class="close-button" aria-label="Close guide">×</button></div><div id="detail-content"></div></dialog>
+  <dialog id="import-dialog" class="import-dialog" aria-labelledby="import-title"><h2 id="import-title">Bring your journey with you.</h2><p id="import-summary"></p><div class="import-options"><button class="primary-button" id="merge-import">Merge with my progress</button><button class="secondary-button" id="replace-import">Replace my progress</button><button class="text-button" id="cancel-import">Cancel</button></div><p class="import-help">Merge keeps your current earned trophies. Replace uses only the imported list.</p></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <noscript><div class="noscript">Enable JavaScript to load the local trophy guide and save your checklist.</div></noscript>
+</body>
+</html>
