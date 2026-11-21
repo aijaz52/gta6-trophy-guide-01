@@ -1,145 +1,94 @@
-// Pure state helpers, shared by the interface and the local regression checks.
-export const STORAGE_KEY = 'leonida-ledger-v1';
-export const LEGACY_KEY = 'gta6-trophy-checklist';
-export const PHASES = [
-  { id: 'story', title: 'Story chapters', short: 'Story', detail: 'Play the five story chapters at your own pace. Before advancing in Chapter 1, accept the morning meditation invitation. Keep cheats disabled: the notes say they disable trophies and saving.' },
-  { id: 'missions', title: 'Key missions', short: 'Missions', detail: 'Collect the mission-specific story trophies along the way. Several chapter trophies unlock after the beginning of the next chapter, so keep playing if a chapter notification seems delayed.' },
-  { id: 'characters', title: 'Character strands', short: 'Characters', detail: 'Follow character texts and optional mission chains as they open. Some jobs require a specific protagonist. In Chapter 3, follow Yasmani’s missions for the Snap Gun needed for an undetected jewelry robbery. In Chapter 4, complete the optional bank-vault unlock mission. Use the in-game counter for the eight qualifying stranger strands; not every character chain counts.' },
-  { id: 'challenges', title: 'Activities & challenges', short: 'Challenges', detail: 'Mix races, range practice, stunts, and activities into your travels. Aim beyond the trophy minimums: 300 stunts, 70 of 80 challenges, and all 42 drone races contribute to 100% completion. Earn all 42 shooting-range gold medals across 12 ranges and finish Bret’s 15 hunting tasks. The completion checklist needs 15 of 18 meditations, but the meditation trophy needs the full counter of 18; protect the early Chapter 1 invitation.' },
-  { id: 'collections', title: 'Explore & collect', short: 'Collections', detail: 'Finish three card sets, register 100 WAiNK It locations, and scan 100 vehicle models. Continue to 200 vehicle models for 100%, and use flights to clear remaining map fog.' },
-  { id: 'misc', title: 'The final sweep', short: 'Miscellaneous', detail: 'Use post-story free roam to finish robberies, purchases, partner activities, and the remaining checklist. For 100%, escape from all 8 bank vault robberies and complete all 39 gang operations, beyond the trophy minimums of 5 vaults and one operation from each of the 9 gangs. Find the underwater discoveries too. After the story, open Progress → Stats → 100% Completion for the authoritative requirements; earlier progress already counts. Reaching 100% is one requirement: earn all other 54 trophies to claim platinum.' },
+// The checklist's rules live here so storage, imports and the screen agree.
+export const SAVE_SLOT = 'leonida-ledger-v1';
+export const OLD_SLOT = 'gta6-trophy-checklist';
+export const SETTINGS = Object.freeze({ protected: true, sort: 'recommended', view: 'grid' });
+export const JOURNEY = [
+  { key: 'story', label: 'Story', title: 'Follow the story', advice: 'Keep cheats off. Accept Lucia’s Chapter 1 balcony meditation after Down to Earth. The notes report one playthrough, no replay, no difficulty selection and no New Game+. Some chapter rewards arrive in the next chapter.' },
+  { key: 'missions', label: 'Missions', title: 'Finish the headline jobs', advice: 'Collect the six mission rewards while progressing through Chapters 2–5. The finale leaves free roam available for the rest of your checklist.' },
+  { key: 'characters', label: 'Characters', title: 'Answer those messages', advice: 'Follow optional contacts as their texts arrive. Andy requires Lucia; Tyrone requires Jason. Unlock Yasmani’s Snap Gun in Chapter 3. Check the game’s counter for qualifying stranger strands: not every contact counts.' },
+  { key: 'challenges', label: 'Challenges', title: 'Practice around the state', advice: 'For 100%, aim for 300 stunts, 70 of 80 challenges, all 42 drone races, 42 range golds across 12 ranges and all 15 Bret jobs. The meditation trophy needs a counter of 18, beyond the completion checklist’s 15.' },
+  { key: 'collections', label: 'Collections', title: 'Read the landscape', advice: 'Finish three card sets, record 100 WAiNK It locations and scan 100 vehicle models. Keep scanning to 200 for 100% completion. Flying helps uncover the map.' },
+  { key: 'misc', label: 'Final sweep', title: 'Close the Ledger', advice: 'After the credits, consult Progress → Stats → 100% Completion. Earlier work counts. Finish all 8 vaults, 39 gang operations and underwater discoveries, plus the other listed categories. Platinum also requires every trophy outside the 100% checklist.' },
 ];
+const priority = ['positive-mental-attitude', 'vice-got-a-price', 'a-long-road', 'cunning-stunts', 'the-shootist', 'master-of-none'];
+const tierOrder = ['platinum', 'gold', 'silver', 'bronze'];
+const nameKey = text => String(text).toLowerCase().replace(/[‘’]/g, "'").replace(/\.$/, '');
 
-export const DEFAULT_PREFS = { protected: true, view: 'grid', sort: 'recommended' };
-const recommendedRanks = new Map([
-  'positive-mental-attitude', 'vice-got-a-price', 'a-long-road', 'cunning-stunts', 'the-shootist', 'master-of-none',
-].map((id, index) => [id, index]));
-const normalizeName = (value) => String(value).replace(/[’‘]/g, "'").replace(/\.$/, '').toLowerCase();
-
-/** Check whether a trophy's details should be hidden from the current view. */
-export function isConcealed(trophy, state) {
-  return state.prefs.protected && trophy.hidden && !state.earned.has(trophy.id) && !state.revealed.has(trophy.id);
+export function newLedger() {
+  return { earned: new Set(), revealed: new Set(), prefs: { ...SETTINGS }, filter: 'all', tier: 'all', phase: '', query: '' };
 }
 
-/** Summarize earned trophy counts and points. */
-export function getTrophyProgress(trophies, earned) {
-  let count = 0;
-  let points = 0;
-  for (const trophy of trophies) {
-    if (!earned.has(trophy.id)) continue;
-    count++;
-    points += trophy.points;
+export function shielded(trophy, ledger) {
+  return Boolean(trophy.hidden && ledger.prefs.protected && !ledger.revealed.has(trophy.id) && !ledger.earned.has(trophy.id));
+}
+
+export function settlePlatinum(ledger, catalogue) {
+  for (const trophy of catalogue.filter(item => item.tier === 'platinum')) {
+    const ready = catalogue.filter(item => item.id !== trophy.id).every(item => ledger.earned.has(item.id));
+    ledger.earned[ready ? 'add' : 'delete'](trophy.id);
   }
-  return {
-    count,
-    points,
-    remaining: trophies.length - count,
-    percent: trophies.length ? count / trophies.length * 100 : 0,
+  return ledger;
+}
+
+export function totals(catalogue, earned) {
+  const owned = catalogue.filter(item => earned.has(item.id));
+  return { earned: owned.length, left: catalogue.length - owned.length, score: owned.reduce((sum, item) => sum + item.points, 0), percent: catalogue.length ? 100 * owned.length / catalogue.length : 0 };
+}
+
+export function itinerary(catalogue, ledger) {
+  const stages = JOURNEY.map(stage => {
+    const members = catalogue.filter(item => item.phase === stage.key);
+    return { ...stage, total: members.length, done: members.filter(item => ledger.earned.has(item.id)).length, urgent: members.some(item => item.missable && !ledger.earned.has(item.id)) };
+  });
+  const next = stages.find(stage => stage.urgent) ?? stages.find(stage => stage.done > 0 && stage.done < stage.total) ?? stages.find(stage => stage.done < stage.total);
+  return stages.map(stage => ({ ...stage, next: stage === next }));
+}
+
+export function visibleTrophies(catalogue, ledger) {
+  const terms = ledger.query.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
+  const rank = trophy => priority.includes(trophy.id) ? priority.indexOf(trophy.id) : catalogue.indexOf(trophy) + priority.length;
+  const safeName = trophy => shielded(trophy, ledger) ? 'Hidden trophy' : trophy.name;
+  const compare = {
+    recommended: (a, b) => rank(a) - rank(b),
+    source: (a, b) => catalogue.indexOf(a) - catalogue.indexOf(b),
+    name: (a, b) => safeName(a).localeCompare(safeName(b)),
+    tier: (a, b) => tierOrder.indexOf(a.tier) - tierOrder.indexOf(b.tier),
+    points: (a, b) => b.points - a.points,
+    unearned: (a, b) => Number(ledger.earned.has(a.id)) - Number(ledger.earned.has(b.id)) || rank(a) - rank(b),
+  }[ledger.prefs.sort];
+  return catalogue.filter(trophy => {
+    const matches = { all: true, earned: ledger.earned.has(trophy.id), story: trophy.story, hidden: trophy.hidden, missable: trophy.missable };
+    if (!matches[ledger.filter] || (ledger.tier !== 'all' && ledger.tier !== trophy.tier) || (ledger.phase && ledger.phase !== trophy.phase)) return false;
+    const words = shielded(trophy, ledger)
+      ? ['hidden trophy', trophy.tier, trophy.phase, trophy.story ? 'story' : '']
+      : [trophy.name, trophy.description, ...trophy.guide, trophy.tier, trophy.phase, trophy.category, trophy.missable ? 'missable' : ''];
+    const searchable = words.join(' ').toLocaleLowerCase();
+    return terms.every(term => searchable.includes(term));
+  }).sort((a, b) => (compare ?? ((x, y) => rank(x) - rank(y)))(a, b) || catalogue.indexOf(a) - catalogue.indexOf(b));
+}
+
+export function exportLedger(ledger) {
+  return { game: 'Grand Theft Auto VI', version: 1, exportedAt: new Date().toISOString(), earned: Array.from(ledger.earned), revealed: Array.from(ledger.revealed), preferences: { ...ledger.prefs } };
+}
+
+export function readLedger(payload, catalogue) {
+  const oldFormat = Array.isArray(payload);
+  if (!oldFormat && (!payload || payload.game !== 'Grand Theft Auto VI' || payload.version !== 1)) throw new Error('Use a version 1 Ledger backup or an original checklist array.');
+  const lookup = new Map(catalogue.flatMap(trophy => [[trophy.id, trophy.id], [nameKey(trophy.name), trophy.id]]));
+  const decode = values => {
+    if (!Array.isArray(values) || values.length > 1000) throw new Error('The backup needs a trophy array of at most 1,000 entries.');
+    return new Set(values.map(value => {
+      const id = typeof value === 'string' ? lookup.get(value) ?? lookup.get(nameKey(value)) : Number.isInteger(value) && value > 0 ? catalogue[value - 1]?.id : undefined;
+      if (!id) throw new Error('The backup contains an unknown trophy.');
+      return id;
+    }));
   };
-}
-
-/** Protect unfinished missables, then finish the earliest active stage before starting another. */
-export function getRoadmapSteps(trophies, earned) {
-  const steps = PHASES.map((phase, index) => ({ ...phase, number: index + 1, total: 0, count: 0 }));
-  const stepsByPhase = new Map(steps.map(step => [step.id, step]));
-  const counted = new Set();
-  const urgentPhases = new Set();
-  for (const trophy of trophies) {
-    const step = stepsByPhase.get(trophy.phase);
-    if (!step || counted.has(trophy.id)) continue;
-    counted.add(trophy.id);
-    step.total++;
-    if (earned.has(trophy.id)) step.count++;
-    else if (trophy.missable) urgentPhases.add(step.id);
-  }
-  const nextStep = steps.find(step => urgentPhases.has(step.id))
-    ?? steps.find(step => step.count > 0 && step.count < step.total)
-    ?? steps.find(step => step.count < step.total);
-  return steps.map(step => ({
-    ...step,
-    remaining: step.total - step.count,
-    complete: step.total > 0 && step.count === step.total,
-    current: step === nextStep,
-  }));
-}
-
-/** Keep platinum earned only when every other trophy is earned. */
-export function reconcilePlatinum(earned, trophies) {
-  const platinum = trophies.find(t => t.tier === 'platinum');
-  if (!platinum) return earned;
-  const allOthers = trophies.every(t => t.id === platinum.id || earned.has(t.id));
-  if (allOthers) earned.add(platinum.id);
-  else earned.delete(platinum.id);
-  return earned;
-}
-
-/** Validate a backup and convert its progress into current application state. */
-export function parseProgress(input, trophies) {
-  const legacy = Array.isArray(input);
-  if (!legacy && (!input || typeof input !== 'object' || input.version !== 1 || input.game !== 'Grand Theft Auto VI')) {
-    throw new Error('Choose a Leonida Ledger version 1 backup or an original checklist export.');
-  }
-  const entries = legacy ? input : input.earned;
-  if (!Array.isArray(entries)) throw new Error('This backup needs an earned-trophy array.');
-  const ids = new Set(trophies.map(t => t.id));
-  const names = new Map(trophies.map(t => [normalizeName(t.name), t.id]));
-  function convert(items) {
-    if (!Array.isArray(items) || items.length > 1000) throw new Error('This trophy list is invalid or too large.');
-    const result = new Set();
-    for (const value of items) {
-      let id;
-      if (typeof value === 'string') id = ids.has(value) ? value : names.get(normalizeName(value));
-      else if (Number.isInteger(value) && value > 0) id = trophies[value - 1]?.id;
-      if (!id) throw new Error('This backup contains an unknown trophy. No progress was changed.');
-      result.add(id);
-    }
-    return result;
-  }
-  const earned = convert(entries);
-  const revealed = convert(legacy ? [] : (input.revealed ?? []));
-  const prefs = { ...DEFAULT_PREFS };
-  if (!legacy && input.preferences && typeof input.preferences === 'object') {
-    if (typeof input.preferences.protected === 'boolean') prefs.protected = input.preferences.protected;
-    if (['grid', 'list'].includes(input.preferences.view)) prefs.view = input.preferences.view;
-    if (['recommended', 'source', 'name', 'tier', 'points', 'unearned'].includes(input.preferences.sort)) prefs.sort = input.preferences.sort;
-  }
-  return { earned: reconcilePlatinum(earned, trophies), revealed, prefs };
-}
-
-/** Create a timestamped export of progress, reveals, and preferences. */
-export function makeBackup(state) {
-  return { version: 1, game: 'Grand Theft Auto VI', exportedAt: new Date().toISOString(), earned: [...state.earned], revealed: [...state.revealed], preferences: { ...state.prefs } };
-}
-
-/** Filter and sort trophies according to the current view state. */
-export function selectTrophies(trophies, state) {
-  const query = state.query.trim().toLowerCase();
-  const selected = trophies.filter(t => {
-    if (state.filter === 'story' && !t.story) return false;
-    if (state.filter === 'hidden' && !t.hidden) return false;
-    if (state.filter === 'missable' && !t.missable) return false;
-    if (state.filter === 'earned' && !state.earned.has(t.id)) return false;
-    if (state.tier !== 'all' && t.tier !== state.tier) return false;
-    if (state.phase && t.phase !== state.phase) return false;
-    if (!query) return true;
-    // An unrevealed name/description/guide must not become a search spoiler.
-    const searchable = isConcealed(t, state)
-      ? `hidden trophy ${t.tier} ${t.category} ${t.phase} ${t.story ? 'story' : ''}`
-      : `${t.name} ${t.description} ${t.steps.join(' ')} ${t.tier} ${t.category} ${t.phase} ${t.story ? 'story' : ''} ${t.missable ? 'missable' : ''}`;
-    return searchable.toLowerCase().includes(query);
-  });
-  const order = new Map(trophies.map((t, i) => [t.id, i]));
-  const tiers = { platinum: 0, gold: 1, silver: 2, bronze: 3 };
-  const recommended = (t) => recommendedRanks.get(t.id) ?? (order.get(t.id) + recommendedRanks.size);
-  const displayName = (t) => isConcealed(t, state) ? 'Hidden trophy' : t.name;
-  return selected.sort((a, b) => {
-    switch (state.prefs.sort) {
-      case 'name': return displayName(a).localeCompare(displayName(b)) || order.get(a.id) - order.get(b.id);
-      case 'tier': return tiers[a.tier] - tiers[b.tier] || order.get(a.id) - order.get(b.id);
-      case 'points': return b.points - a.points || order.get(a.id) - order.get(b.id);
-      case 'unearned': return Number(state.earned.has(a.id)) - Number(state.earned.has(b.id)) || recommended(a) - recommended(b);
-      case 'source': return order.get(a.id) - order.get(b.id);
-      default: return recommended(a) - recommended(b);
-    }
-  });
+  const result = newLedger();
+  result.earned = decode(oldFormat ? payload : payload.earned);
+  result.revealed = decode(oldFormat ? [] : payload.revealed ?? []);
+  const preferences = oldFormat ? {} : payload.preferences ?? {};
+  if (typeof preferences.protected === 'boolean') result.prefs.protected = preferences.protected;
+  if (['grid', 'list'].includes(preferences.view)) result.prefs.view = preferences.view;
+  if (['recommended', 'source', 'name', 'tier', 'points', 'unearned'].includes(preferences.sort)) result.prefs.sort = preferences.sort;
+  return settlePlatinum(result, catalogue);
 }

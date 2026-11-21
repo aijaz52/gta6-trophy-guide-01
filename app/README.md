@@ -1,38 +1,31 @@
-# Leonida Ledger
+# The Leonida Ledger
 
-A static, offline GTA VI trophy guide and tracker. No build, packages, remote requests, fonts, or image assets are required. The sunset, skyline, palms, and trophy emblems are CSS.
+A personal GTA VI field guide with a 55-entry checklist, six-stage platinum route, spoiler controls and portable progress. The interface is plain HTML, CSS and browser JavaScript. Its illustrated coast and trophy cups are drawn in CSS; the app needs no downloaded libraries, fonts or images.
 
-From the repository root:
+Start the local server from the repository root with `node serve.ts`, then visit `http://localhost:8080`. Use an HTTP origin because the browser loads modules and the local JSON catalogue. A successful first visit installs a service worker where supported; wait for “OFFLINE READY” before closing the server. Deployment updates must change the versioned shell cache in `sw.js`.
 
-```sh
-node serve.ts
-```
+## Using the checklist
 
-Open `http://localhost:8080`. ES modules and local JSON need an HTTP origin; opening `index.html` directly from the filesystem is not supported. After the first successful load, the service worker caches the app for offline reloads in supporting browsers. Serve a new version with a new cache name in `sw.js` when updating deployed assets.
+Search by name, unlock condition or guide text. Combine the collection tabs with a tier and a roadmap stage. Sort by the suggested route, source position, name, tier, points or unearned status. Grid and list layouts show the same checklist. Clear filters restores the whole collection.
 
-## Data
+Open any visible trophy for its route, caveats and citations. Spoiler protection starts enabled and masks editorially hidden trophies, including their search terms. You can reveal one entry, hide it again in its guide, or switch protection off for the collection. Earned entries remain visible. The platinum checkmark follows the other 54 entries automatically.
 
-`data/trophies.json` follows `../TROPHY_SOURCE_NOTES.txt` as supplied. All 55 names, tiers, conditions, and G values are retained, with rewritten guide steps and source-line references. Total rewards: 1 platinum, 2 gold, 6 silver, 46 bronze, and 1,000G. The platinum equivalent has no numerical G specified and uses `points: 0`.
+The `/` key focuses search. Escape clears a search or closes a native dialog. Tab navigates controls and Space activates checkboxes. Arrow keys, Home and End move among displayed trophy checkboxes. Updates preserve the active checkbox or stage where possible. Responsive layouts and reduced motion are supported.
 
-The source explicitly labels only some descriptions as official. These use `descriptionType: "official"`; other descriptions use the supplied unlock condition and `descriptionType: "source-condition"`. Both are labeled accurately in the detail panel.
+## Catalogue and source boundaries
 
-The source says approximately 28 trophies are hidden without identifying them individually. The 28 `hidden` / `secret` flags are editorial spoiler protection, disclosed in the UI and data metadata. They are not represented as a verified platform hidden list. The sole `missable` flag is a precaution for Positive Mental Attitude; the source leaves the Chapter 1 meditation requirement unconfirmed. Unknown unlock methods and conflicting venue names are preserved as caveats rather than invented solutions. Colors indicate tiers; player rarity percentages are not supplied.
+`data/trophies.json` is a freshly authored catalogue based on `../TROPHY_SOURCE_NOTES.txt` dated November 18, 2026. It has 1 platinum, 2 gold, 6 silver and 46 bronze entries. The 54 numerical Xbox rewards total 1,000G; the Mythic equivalent of platinum has no supplied number and is represented by zero points. Descriptions are paraphrased unlock conditions, with explicit labels for the few entries whose requirements remain undisclosed.
 
-## Progress
+Each trophy carries its source line range, original reward name, guide instructions and any unresolved detail. The notes attribute an approximately 200-hour estimate and replay limitations to GTABase. These are supplied claims, not independently checked game facts. Citations are presented locally and do not trigger external requests.
 
-- Storage key: `leonida-ledger-v1`. The original `gta6-trophy-checklist` name-array format is migrated automatically.
-- Export includes version, game, earned trophy IDs, individual reveals, display preferences, and timestamp.
-- Import validates the entire file before offering Merge or Replace. Both options import earned and revealed sets; the current device's spoiler and display preferences are retained.
-- Legacy name arrays and numeric-ID arrays are accepted. Invalid files never change current progress.
-- Platinum is derived automatically from the other 54 trophies and is removed if any prerequisite is unchecked.
-- Storage errors show a session-only notice and recommend export. Other tabs synchronize through the storage event.
+The source mentions approximately 28 hidden rewards without an individual list. This catalogue assigns exactly 28 editorial spoiler flags, which should not be read as platform metadata. Positive Mental Attitude is marked potentially missable because the early meditation requirement is uncertain. Unconfirmed methods and the bowling venue naming conflict remain visible caveats. No player rarity statistics are supplied.
 
-## Navigation
+## Keeping progress
 
-Use the sidebar, five collection filters, tier totals, tier selector, roadmap stages, search, sorting, and grid/list toggle. Roadmap stages also filter the checklist. Clear filters resets search, tier, stage, and collection filter together.
+The `leonida-ledger-v1` localStorage record holds earned IDs, individual reveals, preferences and an export timestamp. Existing records use the same stable trophy IDs. The older `gta6-trophy-checklist` array is migrated on load; imports also accept legacy names or one-based catalogue numbers.
 
-Spoiler protection starts on. Hidden names and guides are excluded from search until earned, individually revealed, or globally unprotected. Individual reveals persist and can be hidden again from the guide. The global switch keeps earned and individually revealed trophies visible.
+Export downloads a version 1 JSON backup. Import validates the entire file and then offers merge or replace. Both modes apply checkmarks and reveals while keeping this device’s display preferences. Invalid input leaves the checklist intact. Storage failures produce an export reminder, and other tabs receive changes through browser storage events. Clearing browser storage removes the local copy.
 
-Press `/` to focus search, Tab to navigate, Space to check a trophy, and Escape to close a guide. Dialogs use native focus containment; checklist and roadmap focus are retained after updates. Reduced-motion preferences are respected.
+## Packaging
 
-Sources are displayed as offline citations with local source-line references. The application does not fetch or embed material from the cited sites. It contains no telemetry or account system.
+`node main.ts` copies `app/` and `screenshots/` to the selected output directory and writes the canonical dossier with the existing vendored `buildDossier` function. Set `MAKEFUN_OUTPUT_DIR` to choose a local destination. The app itself requires no compilation.

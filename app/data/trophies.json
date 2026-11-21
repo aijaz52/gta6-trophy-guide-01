@@ -1,303 +1,311 @@
 {
   "game": "Grand Theft Auto VI",
-  "version": 1,
-  "sourceDate": "2026-11-18",
+  "edition": "Leonida Ledger / November 2026",
   "sourceFile": "TROPHY_SOURCE_NOTES.txt",
+  "sourceDate": "2026-11-18",
   "total": 55,
   "totalGamerscore": 1000,
-  "storyCount": 12,
+  "tiers": { "platinum": 1, "gold": 2, "silver": 6, "bronze": 46 },
   "editorialHiddenCount": 28,
   "estimatedHours": 200,
-  "tiers": { "platinum": 1, "gold": 2, "silver": 6, "bronze": 46 },
-  "notes": {
-    "provenance": "Transcribed from the supplied TROPHY_SOURCE_NOTES.txt, dated November 18, 2026. No independent verification or live data is used.",
-    "descriptions": "Only entries explicitly labeled Official description in the notes are marked official. Other descriptions reproduce the supplied unlock condition and are labeled source-condition rather than inventing official wording.",
-    "hidden": "The notes say about 28 trophies are hidden but do not identify each one. The 28 hidden flags are conservative editorial spoiler protection, not a verified platform hidden list.",
-    "missable": "Positive Mental Attitude is potentially missable; the notes do not confirm whether the Chapter 1 meditation is mandatory.",
-    "points": "The 54 numerical rewards in the notes sum to 1,000G. The platinum equivalent is a Mythic Achievement with no numerical G specified, recorded as 0.",
-    "rarity": "Colors indicate trophy tier. Player unlock percentages are unavailable, so no rarity statistics are fabricated."
-  },
-  "sources": {
-    "gta-guide": { "name": "gta.guide", "url": "https://gta.guide/gta-6", "context": "Trophy conditions and guide details reproduced in the supplied source notes." },
-    "gtabase": { "name": "GTABase", "url": "https://www.gtabase.com/grand-theft-auto-6/", "context": "Attributed in the notes for the approximately 200-hour estimate and absence of mission replay, difficulty selection, and New Game+." }
-  },
+  "methodology": [
+    "This catalogue follows the supplied source notes; their claims have not been independently verified.",
+    "Descriptions summarize the supplied unlock conditions. An undisclosed requirement remains undisclosed rather than receiving a guessed solution.",
+    "The source estimates about 28 hidden trophies without naming them. Our 28 hidden flags are editorial spoiler protection, not confirmed platform flags.",
+    "Positive Mental Attitude receives a precautionary missable flag. The notes do not establish whether the Chapter 1 invitation is mandatory.",
+    "The 54 listed numerical rewards total 1,000G. Platinum is represented by 0 points because its Mythic equivalent has no numerical reward specified.",
+    "Tier colors identify reward metals. No player rarity percentages are available."
+  ],
+  "references": [
+    { "title": "gta.guide · GTA VI", "address": "https://gta.guide/gta-6", "note": "The supplied document's trophy requirements and activity advice." },
+    { "title": "GTABase · Grand Theft Auto VI", "address": "https://www.gtabase.com/grand-theft-auto-6/", "note": "The source attributes its roughly 200-hour estimate and lack of replay, difficulty selection and New Game+ to GTABase." }
+  ],
   "trophies": [
     {
-      "id": "vice-got-a-price", "name": "Vice Got a Price!", "description": "Congratulations! You're a Leonida Legend", "descriptionType": "official",
-      "tier": "platinum", "points": 0, "hidden": false, "secret": false, "story": false, "missable": false, "category": "completion", "phase": "misc", "chapter": null,
-      "steps": ["Earn the other 54 trophies on this checklist. The platinum is the final reward for the full set.", "Use A Long Road as your completion checklist, then finish trophy-specific targets that sit outside that checklist.", "Protect your Chapter 1 meditation opportunity and keep cheats disabled throughout the run."],
-      "whenMissed": null, "sources": ["gta-guide", "gtabase"], "sourceLines": "25–30", "uncertainty": "The roughly 200-hour estimate is attributed to GTABase in the notes; it is not a guaranteed completion time."
+      "id": "vice-got-a-price", "name": "Vice Got a Price!", "tier": "platinum", "points": 0, "description": "Earn every other trophy and become a Leonida Legend.",
+      "phase": "misc", "category": "completion", "hidden": false, "sourceLines": "25–30",
+      "guide": ["Complete all 54 prerequisite entries, including A Long Road's 100% target.", "Use this Ledger for trophy-only tasks as well as the game's completion menu. The final checkmark is awarded automatically here."],
+      "caveat": "The source's 200-hour estimate is approximate. The Mythic reward has no numerical G value supplied."
     },
     {
-      "id": "just-like-paradise", "name": "Just Like Paradise", "description": "Complete the Gone Fishing mission", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 5, "hidden": true, "secret": true, "story": true, "missable": false, "category": "story", "phase": "story", "chapter": 1,
-      "steps": ["Follow the opening Chapter 1 story missions until Gone Fishing becomes available.", "Complete Gone Fishing. This is a required early story mission and the notes identify the trophy as unmissable."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "34–37"
+      "id": "just-like-paradise", "name": "Just Like Paradise", "tier": "bronze", "points": 5, "description": "Finish Gone Fishing in the opening chapter.",
+      "phase": "story", "category": "story", "story": true, "hidden": true, "chapter": 1, "sourceLines": "34–37",
+      "guide": ["Advance through Chapter 1 until Gone Fishing.", "Finish the mission objectives. The notes describe this early story reward as unmissable."]
     },
     {
-      "id": "paradise-lost", "name": "Paradise Lost", "description": "Complete Chapter 1", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 20, "hidden": true, "secret": true, "story": true, "missable": false, "category": "story", "phase": "story", "chapter": 1,
-      "steps": ["Finish the Chapter 1 story arc.", "Continue into Chapter 2 and complete What's in the Bag? The notes place the actual unlock after this mission, rather than at the chapter transition."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "39–42"
+      "id": "paradise-lost", "name": "Paradise Lost", "tier": "bronze", "points": 20, "description": "Complete the first story chapter.",
+      "phase": "story", "category": "story", "story": true, "hidden": true, "chapter": 1, "sourceLines": "39–42",
+      "guide": ["Play through the Chapter 1 storyline.", "Continue into Chapter 2: the supplied trigger is completion of What's in the Bag?, rather than the chapter boundary itself."]
     },
     {
-      "id": "tits-ass-drug-money", "name": "T**s Ass Drug Money", "description": "Complete Chapter 2", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 20, "hidden": true, "secret": true, "story": true, "missable": false, "category": "story", "phase": "story", "chapter": 2,
-      "steps": ["Work through the required missions in Chapter 2.", "Finish Welcome to Vice City at the start of Chapter 3 to trigger the trophy. The masked name is preserved as supplied in the notes."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "44–47"
+      "id": "tits-ass-drug-money", "name": "T**s Ass Drug Money", "tier": "bronze", "points": 20, "description": "Finish Chapter 2 and enter the next chapter.",
+      "phase": "story", "category": "story", "story": true, "hidden": true, "chapter": 2, "sourceLines": "44–47",
+      "guide": ["Finish the second chapter's required missions.", "Play Welcome to Vice City at the opening of Chapter 3 for the reported unlock. The trophy title keeps the source's masking."]
     },
     {
-      "id": "vice-city-baby", "name": "Vice City, Baby!", "description": "Complete Chapter 3", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 20, "hidden": true, "secret": true, "story": true, "missable": false, "category": "story", "phase": "story", "chapter": 3,
-      "steps": ["Complete the Chapter 3 main story.", "Play Ocean Beach and Another Life, the first two missions in Chapter 4. The notes say the trophy unlocks after both are finished."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "49–52"
+      "id": "vice-city-baby", "name": "Vice City, Baby!", "tier": "bronze", "points": 20, "description": "Bring Chapter 3 to a close.",
+      "phase": "story", "category": "story", "story": true, "hidden": true, "chapter": 3, "sourceLines": "49–52",
+      "guide": ["Finish Chapter 3's story arc.", "Complete Ocean Beach and Another Life in Chapter 4. Both opening missions precede the reward according to the notes."]
     },
     {
-      "id": "top-of-the-world-ma", "name": "Top Of The World, Ma", "description": "Complete Chapter 4", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 20, "hidden": true, "secret": true, "story": true, "missable": false, "category": "story", "phase": "story", "chapter": 4,
-      "steps": ["Follow the main mission chain through Chapter 4.", "Finish the chapter. The supplied notes do not specify a further mission or delayed trigger for this unlock."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "54–56"
+      "id": "top-of-the-world-ma", "name": "Top Of The World, Ma", "tier": "bronze", "points": 20, "description": "Finish the fourth story chapter.",
+      "phase": "story", "category": "story", "story": true, "hidden": true, "chapter": 4, "sourceLines": "54–56",
+      "guide": ["Keep following the main objectives through Chapter 4.", "Complete the chapter; the source does not give an additional trigger or performance condition."]
     },
     {
-      "id": "you-gotta-know-when-to-get-off", "name": "You Gotta Know When to Get Off", "description": "Complete the final mission", "descriptionType": "source-condition",
-      "tier": "gold", "points": 50, "hidden": true, "secret": true, "story": true, "missable": false, "category": "story", "phase": "story", "chapter": 5,
-      "steps": ["Finish the remaining main story missions and complete the finale.", "After the credits, return to free roam to finish activities, collections, and other outstanding trophies."], "whenMissed": null, "sources": ["gta-guide", "gtabase"], "sourceLines": "58–61"
+      "id": "you-gotta-know-when-to-get-off", "name": "You Gotta Know When to Get Off", "tier": "gold", "points": 50, "description": "See the story through its final mission.",
+      "phase": "story", "category": "story", "story": true, "hidden": true, "chapter": 5, "sourceLines": "58–61",
+      "guide": ["Reach the finale and finish the last main mission.", "Once the credits end, use continued free roam to work on the unfinished collection."]
     },
     {
-      "id": "trust", "name": "Trust", "description": "Complete the Breakfast Run mission", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 10, "hidden": true, "secret": true, "story": true, "missable": false, "category": "story", "phase": "missions", "chapter": 2,
-      "steps": ["Advance the Chapter 2 story until Breakfast Run is available.", "Complete that mission to earn the trophy; no additional challenge is specified."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "63–66"
+      "id": "trust", "name": "Trust", "tier": "bronze", "points": 10, "description": "Complete Breakfast Run.",
+      "phase": "missions", "category": "story", "story": true, "hidden": true, "chapter": 2, "sourceLines": "63–66",
+      "guide": ["Look for Breakfast Run during Chapter 2's main storyline.", "Finish its objectives; the notes list no extra requirement for this trophy."]
     },
     {
-      "id": "break-the-bank", "name": "Break the Bank", "description": "Complete The Cartel Heist mission", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 25, "hidden": true, "secret": true, "story": true, "missable": false, "category": "story", "phase": "missions", "chapter": 3,
-      "steps": ["Progress through Chapter 3 to The Cartel Heist.", "Complete the heist as part of the main mission chain."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "68–71"
+      "id": "break-the-bank", "name": "Break the Bank", "tier": "bronze", "points": 25, "description": "Pull off The Cartel Heist.",
+      "phase": "missions", "category": "story", "story": true, "hidden": true, "chapter": 3, "sourceLines": "68–71",
+      "guide": ["Progress through Chapter 3 until The Cartel Heist is available.", "Complete the mission to collect its story reward."]
     },
     {
-      "id": "family-matters", "name": "Family Matters", "description": "Complete the Child's Play mission", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 15, "hidden": true, "secret": true, "story": true, "missable": false, "category": "story", "phase": "missions", "chapter": 4,
-      "steps": ["Continue the Chapter 4 story until Child's Play.", "Finish the mission to unlock this story reward."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "73–76"
+      "id": "family-matters", "name": "Family Matters", "tier": "bronze", "points": 15, "description": "Complete the Child's Play mission.",
+      "phase": "missions", "category": "story", "story": true, "hidden": true, "chapter": 4, "sourceLines": "73–76",
+      "guide": ["Continue the fourth chapter to Child's Play.", "Follow the mission through to completion; no separate medal target is supplied."]
     },
     {
-      "id": "dwnfall", "name": "DWNFALL", "description": "Complete the Headliners mission", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 15, "hidden": true, "secret": true, "story": true, "missable": false, "category": "story", "phase": "missions", "chapter": 4,
-      "steps": ["Reach Headliners during Chapter 4.", "Finish its story objectives. No separate performance requirement is listed in the notes."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "78–81"
+      "id": "dwnfall", "name": "DWNFALL", "tier": "bronze", "points": 15, "description": "Finish Headliners.",
+      "phase": "missions", "category": "story", "story": true, "hidden": true, "chapter": 4, "sourceLines": "78–81",
+      "guide": ["Reach Headliners in Chapter 4.", "Complete the mission's story objectives for the listed reward."]
     },
     {
-      "id": "hi-jacked", "name": "Hi-Jacked", "description": "Complete the VCIA Takedown mission", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 25, "hidden": true, "secret": true, "story": true, "missable": false, "category": "story", "phase": "missions", "chapter": 4,
-      "steps": ["Advance to VCIA Takedown in Chapter 4.", "Complete the mission. This trophy follows the story rather than a separate airport free-roam action."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "83–86"
+      "id": "hi-jacked", "name": "Hi-Jacked", "tier": "bronze", "points": 25, "description": "Finish VCIA Takedown.",
+      "phase": "missions", "category": "story", "story": true, "hidden": true, "chapter": 4, "sourceLines": "83–86",
+      "guide": ["Play Chapter 4 until VCIA Takedown.", "Complete that mission. The source connects this reward to the mission, independently of the free-roam jet trophy."]
     },
     {
-      "id": "snow-storm", "name": "Snow Storm", "description": "Complete the Operation Savage Glory mission", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 25, "hidden": true, "secret": true, "story": true, "missable": false, "category": "story", "phase": "missions", "chapter": 5,
-      "steps": ["Play through Chapter 5 until Operation Savage Glory.", "Complete the mission to earn the trophy."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "88–91"
+      "id": "snow-storm", "name": "Snow Storm", "tier": "bronze", "points": 25, "description": "Complete Operation Savage Glory.",
+      "phase": "missions", "category": "story", "story": true, "hidden": true, "chapter": 5, "sourceLines": "88–91",
+      "guide": ["Advance Chapter 5 to Operation Savage Glory.", "Finish the operation and its required objectives."]
     },
     {
-      "id": "a-long-road", "name": "A Long Road", "description": "Reach 100% completion", "descriptionType": "source-condition",
-      "tier": "gold", "points": 100, "hidden": false, "secret": false, "story": false, "missable": false, "category": "completion", "phase": "misc", "chapter": null,
-      "steps": ["After the story, open Progress → Stats → 100% Completion. Earlier progress already counts; the notes say the completion checklist itself has no missable requirements.", "Finish all 8 bank vaults, 39 gang operations, underwater discoveries, 42 shooting-range gold medals, 42 drone races, and Bret's 15 hunting tasks.", "Reach the partial-category targets too: 70 of 80 challenges, 15 of 18 meditations, 300 stunts, and 200 vehicle models.", "Use the in-game checklist for any remaining requirements. The supplied notes give examples rather than an exhaustive breakdown of every category."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "94–98; 103; 118; 205"
+      "id": "a-long-road", "name": "A Long Road", "tier": "gold", "points": 100, "description": "Reach the game's 100% completion target.",
+      "phase": "misc", "category": "completion", "hidden": false, "sourceLines": "94–98; 103; 113; 118; 169; 205; 233; 248",
+      "guide": ["After the story, consult Progress → Stats → 100% Completion. Work performed earlier already contributes; the notes say this checklist has no missable requirements.", "Complete all 8 vaults, all 39 gang operations, underwater discoveries, 42 range golds, all 42 drone races and Bret's 15 hunting tasks.", "Reach the partial targets as well: 70 of 80 challenges, 15 of 18 meditations, 300 stunts and 200 scanned vehicle models.", "Use the in-game checklist to identify remaining categories. The supplied document gives examples rather than a complete category inventory."],
+      "caveat": "100% completion and all trophies have different thresholds; finishing this requirement alone does not award platinum."
     },
     {
-      "id": "cunning-stunts", "name": "Cunning Stunts", "description": "Complete 250 stunts", "descriptionType": "source-condition",
-      "tier": "silver", "points": 40, "hidden": false, "secret": false, "story": false, "missable": false, "category": "activities", "phase": "challenges", "chapter": null,
-      "steps": ["Complete any mixture of stunt jumps, under-bridge flights, knife-edge flights, and base jumps.", "Reach 250 out of the 397 available stunts. Under-bridge flights are the notes' suggested fast route.", "Continue to 300 stunts if you are also working on 100% completion."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "100–103"
+      "id": "cunning-stunts", "name": "Cunning Stunts", "tier": "silver", "points": 40, "description": "Complete any combination of 250 stunts.",
+      "phase": "challenges", "category": "activities", "hidden": false, "sourceLines": "100–103",
+      "guide": ["Combine jumps, bridge flights, knife-edge flying and base jumps toward 250 of the 397 available stunts.", "The source recommends under-bridge flights for speed. Continue to 300 when pursuing 100% completion."]
     },
     {
-      "id": "master-of-none", "name": "Master of None", "description": "Do each kind of activity at least once", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 20, "hidden": false, "secret": false, "story": false, "missable": false, "category": "activities", "phase": "challenges", "chapter": null,
-      "steps": ["Try fishing, hunting, golf, the shooting range, and pool.", "Make one basketball shot, play an arcade game, win a race, and complete a stunt.", "Check off all nine activity types; repeating one activity does not replace another type."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "105–108"
+      "id": "master-of-none", "name": "Master of None", "tier": "bronze", "points": 20, "description": "Try each of the nine activity types.",
+      "phase": "challenges", "category": "activities", "hidden": false, "sourceLines": "105–108",
+      "guide": ["Go fishing and hunting, play golf and pool, and visit a shooting range.", "Make a basketball shot, play an arcade game, win a race and perform a stunt to cover the remaining four types."]
     },
     {
-      "id": "the-shootist", "name": "The Shootist", "description": "Get gold in every shooting range challenge", "descriptionType": "source-condition",
-      "tier": "silver", "points": 40, "hidden": false, "secret": false, "story": false, "missable": false, "category": "activities", "phase": "challenges", "chapter": null,
-      "steps": ["Visit all 12 shooting ranges and complete their challenges.", "Improve each result to gold until you have all 42 gold medals.", "Range practice also builds Focus, so combine it with preparation for Gunslinger."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "110–113"
+      "id": "the-shootist", "name": "The Shootist", "tier": "silver", "points": 40, "description": "Earn gold on every shooting-range challenge.",
+      "phase": "challenges", "category": "activities", "hidden": false, "sourceLines": "110–113",
+      "guide": ["Visit the 12 shooting ranges and work through their challenges.", "Collect all 42 gold medals. Range practice also improves Focus and contributes to 100%."]
     },
     {
-      "id": "top-fun", "name": "Top Fun", "description": "Win a Top Fun drone race in each of the locations", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 15, "hidden": false, "secret": false, "story": false, "missable": false, "category": "activities", "phase": "challenges", "chapter": null,
-      "steps": ["Find each of the 14 Top Fun drone-racing locations.", "Win one race at every location to meet this trophy's requirement.", "For A Long Road, return and win all 42 drone races rather than stopping at 14 wins."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "115–118"
+      "id": "top-fun", "name": "Top Fun", "tier": "bronze", "points": 15, "description": "Win a drone race at every Top Fun location.",
+      "phase": "challenges", "category": "racing", "hidden": false, "sourceLines": "115–118",
+      "guide": ["Visit each of the 14 Top Fun locations and win one drone race there.", "For the larger completion goal, finish the full set of 42 races instead of stopping at one per location."]
     },
     {
-      "id": "earn-cash-not-kudos", "name": "Earn Cash, Not Kudos", "description": "Win 20 different races", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 20, "hidden": false, "secret": false, "story": false, "missable": false, "category": "activities", "phase": "challenges", "chapter": null,
-      "steps": ["Choose races from the 40 available events.", "Record a win in 20 distinct races. Repeating a race you have already won does not raise this total."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "120–123"
+      "id": "earn-cash-not-kudos", "name": "Earn Cash, Not Kudos", "tier": "bronze", "points": 20, "description": "Win 20 distinct races.",
+      "phase": "challenges", "category": "racing", "hidden": false, "sourceLines": "120–123",
+      "guide": ["Choose separate events from the 40 races available.", "Record wins in 20 different races. Repeating a previously won event does not increase this count."]
     },
     {
-      "id": "baited-my-tackle", "name": "Baited My Tackle", "description": "Win a fishing challenge against Cal", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 10, "hidden": true, "secret": true, "story": false, "missable": false, "category": "characters", "phase": "characters", "chapter": 1,
-      "steps": ["Meet Cal during Feng Shui in Chapter 1.", "Follow the fishing-spot text he sends and work through his fishing quests.", "Beat Cal when his fishing challenge becomes available."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "125–128"
+      "id": "baited-my-tackle", "name": "Baited My Tackle", "tier": "bronze", "points": 10, "description": "Beat Cal in a fishing challenge.",
+      "phase": "challenges", "category": "fishing", "hidden": false, "chapter": 1, "sourceLines": "125–128",
+      "guide": ["Meet Cal through Feng Shui in Chapter 1 and follow the fishing location he texts you.", "Continue his fishing quests until the challenge, then win against him."]
     },
     {
-      "id": "stick-fiddler", "name": "Stick Fiddler", "description": "Complete an arcade game", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 10, "hidden": false, "secret": false, "story": false, "missable": false, "category": "activities", "phase": "challenges", "chapter": null,
-      "steps": ["Choose Tenebrae Lux, Street Trash III, or Time Jackers Rewind on your home TV, or find a Bang For Your Buck arcade cabinet.", "Finish any one of those games. Simply starting a game is not the stated requirement."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "130–133"
+      "id": "stick-fiddler", "name": "Stick Fiddler", "tier": "bronze", "points": 10, "description": "Finish any one arcade game.",
+      "phase": "challenges", "category": "arcade", "hidden": false, "sourceLines": "130–133",
+      "guide": ["Choose Tenebrae Lux, Street Trash III or Time Jackers Rewind on the home television, or find a Bang For Your Buck cabinet.", "Play the selected game through to completion; any one of the four qualifies."]
     },
     {
-      "id": "road-to-rehabilitation", "name": "Road to Rehabilitation", "description": "Complete the final mission for Andy", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 15, "hidden": true, "secret": true, "story": false, "missable": false, "category": "characters", "phase": "characters", "chapter": 3,
-      "steps": ["Play as Lucia in Chapter 3 and respond to Andy's text.", "Complete Climbing the Cellerichain, Pay the Cellerica Fee, Peach!, and Read the Label.", "Finish Puff Puff Pass, the fifth and final job in Andy's chain."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "136–139"
+      "id": "road-to-rehabilitation", "name": "Road to Rehabilitation", "tier": "bronze", "points": 15, "description": "Finish Andy's last mission.",
+      "phase": "characters", "category": "contacts", "hidden": true, "chapter": 3, "sourceLines": "136–139",
+      "guide": ["As Lucia in Chapter 3, answer Andy's message to begin his five-job chain.", "Complete Climbing the Cellerichain, Pay the Cellerica Fee, Peach!, Read the Label and finally Puff Puff Pass."]
     },
     {
-      "id": "this-was-no-boat-accident", "name": "This Was No Boat Accident", "description": "Complete the final mission for Kenton", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 15, "hidden": true, "secret": true, "story": false, "missable": false, "category": "characters", "phase": "characters", "chapter": 1,
-      "steps": ["Take Kenton's treasure-recovery job in Chapter 1.", "Dive at the purple shipwreck markers and use the metal detector to recover treasure from all seven wrecks.", "Wait for Kenton's later text and finish the follow-up to close his mission chain."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "141–144"
+      "id": "this-was-no-boat-accident", "name": "This Was No Boat Accident", "tier": "bronze", "points": 15, "description": "Complete the last job for Kenton.",
+      "phase": "characters", "category": "contacts", "hidden": true, "chapter": 1, "sourceLines": "141–144",
+      "guide": ["Begin Kenton's Chapter 1 treasure work and visit seven wrecks at the purple markers.", "Dive and use the metal detector to recover the treasures. Watch for his later message to complete the strand."]
     },
     {
-      "id": "the-lone-rider", "name": "The Lone Rider", "description": "Complete the final mission for Billy", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 15, "hidden": true, "secret": true, "story": false, "missable": false, "category": "characters", "phase": "characters", "chapter": 2,
-      "steps": ["Finish Coffee Break in Chapter 2 and visit the Thrillbilly Mudclub.", "Complete Billy's five jobs in sequence.", "Finish Hometown Heroes, the fifth job, for the trophy."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "146–149"
+      "id": "the-lone-rider", "name": "The Lone Rider", "tier": "bronze", "points": 15, "description": "Finish Billy's final job.",
+      "phase": "characters", "category": "contacts", "hidden": true, "chapter": 2, "sourceLines": "146–149",
+      "guide": ["After Coffee Break in Chapter 2, visit the Thrillbilly Mudclub to start Billy's jobs.", "Complete all five, ending with Hometown Heroes."]
     },
     {
-      "id": "strangers-and-freaks", "name": "Strangers & Freaks", "description": "Complete 8 stranger mission strands across the State of Leonida", "descriptionType": "source-condition",
-      "tier": "silver", "points": 30, "hidden": false, "secret": false, "story": false, "missable": false, "category": "characters", "phase": "characters", "chapter": null,
-      "steps": ["Finish eight qualifying stranger mission chains and watch the platform trophy counter.", "The notes identify Kirk, Kyle, Yago, and Pilot Pete as examples that count.", "Do not rely on Moses, Tyrone, Yasmani, Andy, Billy, or Eddie for this total; their chains are excluded in the notes."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "151–154", "uncertainty": "The complete list of qualifying stranger chains is still unconfirmed in the source."
+      "id": "strangers-and-freaks", "name": "Strangers & Freaks", "tier": "silver", "points": 30, "description": "Complete eight qualifying stranger mission strands.",
+      "phase": "characters", "category": "strangers", "hidden": true, "sourceLines": "151–154",
+      "guide": ["Follow stranger chains across Leonida. The supplied examples that count are Kirk, Kyle, Yago and Pilot Pete.", "Check the trophy's in-game counter as you finish strands; Moses, Tyrone, Yasmani, Andy, Billy and Eddie are listed as excluded."],
+      "caveat": "The full qualifying list is still unconfirmed in the source. Do not assume every optional contact increases the counter."
     },
     {
-      "id": "supply-and-demand", "name": "Supply & Demand", "description": "Complete the final mission for Randy", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 20, "hidden": true, "secret": true, "story": false, "missable": false, "category": "characters", "phase": "characters", "chapter": null,
-      "steps": ["Use Randy's requested-car list to identify the 16 sports cars he wants.", "Scan vehicles in the WAiNK app to check whether they are on his list.", "Deliver all 16 to his garage in western Vice City and finish the chain."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "156–159"
+      "id": "supply-and-demand", "name": "Supply & Demand", "tier": "bronze", "points": 20, "description": "Complete Randy's vehicle delivery strand.",
+      "phase": "characters", "category": "contacts", "hidden": true, "sourceLines": "156–159",
+      "guide": ["Scan vehicles with WAiNK to identify models requested on Randy's list.", "Deliver all 16 sports cars to his garage in western Vice City and finish the strand."]
     },
     {
-      "id": "spin-on-this", "name": "Spin On This!", "description": "Complete the final mission for Tyrone", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 15, "hidden": true, "secret": true, "story": false, "missable": false, "category": "characters", "phase": "characters", "chapter": 3,
-      "steps": ["Play as Jason and complete Here, Kitty Kitty in Chapter 3.", "Take Tyrone's jobs to destroy the synthetic labs around Vice City.", "Complete Shut Down the Labs to finish Tyrone's chain."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "161–164"
+      "id": "spin-on-this", "name": "Spin On This!", "tier": "bronze", "points": 15, "description": "Complete Tyrone's last mission.",
+      "phase": "characters", "category": "contacts", "hidden": true, "chapter": 3, "sourceLines": "161–164",
+      "guide": ["Use Jason after Here, Kitty Kitty in Chapter 3 to begin Tyrone's work.", "Destroy the synthetic labs around Vice City, then complete Shut Down the Labs."]
     },
     {
-      "id": "positive-mental-attitude", "name": "Positive Mental Attitude", "description": "Meditate at every spot across Leonida", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 10, "hidden": false, "secret": false, "story": false, "missable": true, "category": "characters", "phase": "characters", "chapter": 1,
-      "steps": ["In Chapter 1, accept Lucia's balcony meditation invitation on the morning after Down to Earth. Take this opportunity before advancing.", "Continue visiting meditation spots across Leonida until the counter reaches 18.", "Meditating with both Jason and Lucia counts twice according to the notes. The 100% checklist only needs 15 meditations, so keep going for this trophy."],
-      "whenMissed": "Potentially missable in Chapter 1: skipping Lucia's balcony invitation the morning after Down to Earth may prevent this trophy. Accept it before continuing the story; keep a separate save beforehand if possible.", "sources": ["gta-guide", "gtabase"], "sourceLines": "19–20; 166–169", "uncertainty": "The source has not confirmed whether the balcony meditation is required. Treat this as a precaution, not a confirmed permanent lockout."
+      "id": "positive-mental-attitude", "name": "Positive Mental Attitude", "tier": "bronze", "points": 10, "description": "Meditate throughout Leonida until the counter reaches 18.",
+      "phase": "story", "category": "meditation", "hidden": false, "missable": true, "chapter": 1, "sourceLines": "166–169",
+      "guide": ["The morning after Down to Earth in Chapter 1, accept Lucia's invitation to meditate on the balcony.", "Visit the remaining meditation spots. A joint session with Jason and Lucia counts twice; reach 18 on the trophy counter.", "The 100% checklist needs only 15 meditations, so check the trophy counter separately."],
+      "caveat": "Potentially missable: the source has not confirmed that the early balcony session is required. Taking the invitation preserves the reported opportunity."
     },
     {
-      "id": "fair-game", "name": "Fair Game", "description": "Hunt a unique animal for Bret", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 15, "hidden": true, "secret": true, "story": false, "missable": false, "category": "characters", "phase": "characters", "chapter": 2,
-      "steps": ["Complete Coffee Break in Chapter 2 to open Bret's hunting jobs.", "Work through the hunting assignments and take the requested unique animal.", "If pursuing platinum, complete all 15 jobs for the 100% checklist regardless of when this trophy unlocks."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "171–174", "uncertainty": "The notes do not identify the exact animal that triggers the trophy."
+      "id": "fair-game", "name": "Fair Game", "tier": "bronze", "points": 15, "description": "Hunt a unique animal for Bret.",
+      "phase": "characters", "category": "hunting", "hidden": true, "chapter": 2, "sourceLines": "171–174",
+      "guide": ["Start Bret's hunting work after Coffee Break in Chapter 2.", "Work through his unique-animal jobs. All 15 tasks are needed for 100% completion anyway."],
+      "caveat": "The notes do not identify which animal triggers this trophy."
     },
     {
-      "id": "dont-touch-my-deck", "name": "Don't Touch My Deck", "description": "Collect 3 sets of collectible cards", "descriptionType": "source-condition",
-      "tier": "silver", "points": 30, "hidden": false, "secret": false, "story": false, "missable": false, "category": "collections", "phase": "collections", "chapter": null,
-      "steps": ["Open Progress → Collections to inspect your card sets.", "Find the remaining cards in any three sets. The notes do not require three particular sets.", "Finish all cards within each selected set and confirm three completed sets in Collections."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "176–179"
+      "id": "dont-touch-my-deck", "name": "Don't Touch My Deck", "tier": "silver", "points": 30, "description": "Finish three collectible card sets.",
+      "phase": "collections", "category": "cards", "hidden": false, "sourceLines": "176–179",
+      "guide": ["Use Progress → Collections to see which card sets are close to completion.", "Collect every card in any three sets; no particular trio is specified."]
     },
     {
-      "id": "you-wainker", "name": "You WAiNKer!", "description": "Use WAiNK It in 100 locations", "descriptionType": "source-condition",
-      "tier": "silver", "points": 30, "hidden": false, "secret": false, "story": false, "missable": false, "category": "collections", "phase": "collections", "chapter": null,
-      "steps": ["Use WAiNK It while exploring landmarks, oddities, sculptures, and No Flusher graffiti.", "Register 100 different eligible locations. Any mix of these location types counts."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "182–185"
+      "id": "you-wainker", "name": "You WAiNKer!", "tier": "silver", "points": 30, "description": "Record 100 locations using WAiNK It.",
+      "phase": "collections", "category": "locations", "hidden": false, "sourceLines": "182–185",
+      "guide": ["Use WAiNK It on landmarks, sculptures, oddities and No Flusher graffiti during your travels.", "Register any 100 qualifying locations to reach the target."]
     },
     {
-      "id": "one-last-thing", "name": "One Last Thing", "description": "Complete 50 challenges", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 5, "hidden": false, "secret": false, "story": false, "missable": false, "category": "activities", "phase": "challenges", "chapter": null,
-      "steps": ["Track challenges as you play; many of the 80 available challenges will finish naturally.", "Complete 50 for this trophy, then work toward 70 if pursuing 100% completion."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "187–190"
+      "id": "one-last-thing", "name": "One Last Thing", "tier": "bronze", "points": 5, "description": "Complete 50 challenges.",
+      "phase": "challenges", "category": "challenges", "hidden": false, "sourceLines": "187–190",
+      "guide": ["Work through the available pool of 80 challenges, including those completed naturally during play.", "Finish 50 for this reward, then keep going to 70 for 100% completion."]
     },
     {
-      "id": "hot-together", "name": "Hot Together", "description": "Escape a 4-star wanted level together with your partner", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 20, "hidden": false, "secret": false, "story": false, "missable": false, "category": "partner", "phase": "misc", "chapter": 2,
-      "steps": ["After Coffee Break in Chapter 2, call your partner and travel together.", "Build a four-star wanted level. A bank vault robbery is one way to guarantee four stars.", "Escape with your partner and leave the red zone completely; merely breaking line of sight is not enough."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "192–195"
+      "id": "hot-together", "name": "Hot Together", "tier": "bronze", "points": 20, "description": "Escape a four-star wanted level with your partner.",
+      "phase": "misc", "category": "partner", "hidden": false, "chapter": 2, "sourceLines": "192–195",
+      "guide": ["After Coffee Break in Chapter 2, call your partner and build a four-star wanted level together.", "Escape beyond the red zone. A bank vault robbery supplies the required wanted level, making it a useful combined objective."]
     },
     {
-      "id": "retail-therapy", "name": "Retail Therapy", "description": "Rob 3 stores in a row together with your partner without losing your wanted level", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 20, "hidden": false, "secret": false, "story": false, "missable": false, "category": "partner", "phase": "misc", "chapter": null,
-      "steps": ["Bring your partner and plan a short route linking three shops; the notes suggest the three jewelry stores in northern Vice City.", "Rob all three back-to-back while keeping your wanted level active between robberies.", "Allow roughly 30 seconds for the trophy notification, since the notes report a possible delay."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "197–200"
+      "id": "retail-therapy", "name": "Retail Therapy", "tier": "bronze", "points": 20, "description": "Rob three stores with your partner during one continuous wanted level.",
+      "phase": "misc", "category": "partner", "hidden": false, "sourceLines": "197–200",
+      "guide": ["Bring your partner and plan a route between three stores; the source suggests northern Vice City's three jewelry stores.", "Rob all three without dropping your wanted level. Allow about 30 seconds for the reported notification delay."]
     },
     {
-      "id": "whip-it-good", "name": "Whip It Good", "description": "Scan 100 different vehicles with the WAiNK app", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 20, "hidden": false, "secret": false, "story": false, "missable": false, "category": "collections", "phase": "collections", "chapter": null,
-      "steps": ["Stand beside a busy road and use WAiNK to scan passing vehicle models; stealing them is unnecessary.", "Reach 100 different models for the trophy.", "Keep scanning toward 200 models for the 100% completion requirement."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "202–205"
+      "id": "whip-it-good", "name": "Whip It Good", "tier": "bronze", "points": 20, "description": "Scan 100 different vehicle models with WAiNK.",
+      "phase": "collections", "category": "vehicles", "hidden": false, "sourceLines": "202–205",
+      "guide": ["Stand near a busy road and scan new models as traffic passes; stealing them is unnecessary.", "Reach 100 distinct models for this trophy, or 200 toward the full completion checklist."]
     },
     {
-      "id": "gunslinger", "name": "Gunslinger", "description": "Kill 5 enemies during one activation of Combat Focus", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 10, "hidden": false, "secret": false, "story": false, "missable": false, "category": "combat", "phase": "challenges", "chapter": null,
-      "steps": ["Fill the Focus meter and equip an assault rifle before starting a fight.", "Find a group of enemies close together; gang operations are the suggested opportunity.", "Activate Combat Focus once and defeat five enemies before that activation ends."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "207–210"
+      "id": "gunslinger", "name": "Gunslinger", "tier": "bronze", "points": 10, "description": "Defeat five enemies in a single Combat Focus activation.",
+      "phase": "challenges", "category": "combat", "hidden": false, "sourceLines": "207–210",
+      "guide": ["Fill Focus before the encounter and equip an assault rifle, as recommended by the source.", "Choose a group such as gang-operation enemies, activate Combat Focus once and defeat five before the effect expires."]
     },
     {
-      "id": "catch-me-if-you-can", "name": "Catch Me If You Can", "description": "Perform an unplanned takeoff from VCIA", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 10, "hidden": true, "secret": true, "story": false, "missable": false, "category": "exploration", "phase": "misc", "chapter": null,
-      "steps": ["At VCIA, look for a large passenger aircraft parked at a gate with a jet bridge.", "Steal the aircraft and take off.", "Fly approximately one kilometer away from the airport to satisfy the departure described in the notes."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "213–216"
+      "id": "catch-me-if-you-can", "name": "Catch Me If You Can", "tier": "bronze", "points": 10, "description": "Make an unauthorized departure from VCIA.",
+      "phase": "misc", "category": "exploration", "hidden": true, "sourceLines": "213–216",
+      "guide": ["Find and steal a large passenger jet parked beside a gate's jet bridge at VCIA.", "Take off and travel roughly one kilometer away from the airport."]
     },
     {
-      "id": "challenging-tank", "name": "Challenging Tank", "description": "Kinda hot in these Rhinos", "descriptionType": "official",
-      "tier": "bronze", "points": 10, "hidden": true, "secret": true, "story": false, "missable": false, "category": "combat", "phase": "misc", "chapter": null,
-      "steps": ["Travel to Mile Zero Air Station on the southwestern island of Mariana County.", "Look along the southern edge of the base for parked tanks and steal one.", "Use the stolen tank to defeat enemies. The notes do not specify a required number."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "218–222"
+      "id": "challenging-tank", "name": "Challenging Tank", "tier": "bronze", "points": 10, "description": "Defeat enemies using a stolen tank.",
+      "phase": "misc", "category": "combat", "hidden": true, "sourceLines": "218–222",
+      "guide": ["Go to Mile Zero Air Station on the southwestern island of Mariana County.", "Look along the base's southern edge for tanks, steal one and use it against enemies."]
     },
     {
-      "id": "sneakthief", "name": "Sneakthief", "description": "Rob a jewelry store while remaining undetected", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 10, "hidden": false, "secret": false, "story": false, "missable": false, "category": "robberies", "phase": "misc", "chapter": 3,
-      "steps": ["Complete Yasmani's Chapter 3 missions until you receive the Snap Gun.", "Use it to open a jewelry store's back door quietly.", "Find the safe-code note in the storeroom, open the safe, and complete the robbery without detection."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "224–227"
+      "id": "sneakthief", "name": "Sneakthief", "tier": "bronze", "points": 10, "description": "Rob a jewelry store without being detected.",
+      "phase": "misc", "category": "robberies", "hidden": true, "chapter": 3, "sourceLines": "224–227",
+      "guide": ["Complete Yasmani's Chapter 3 missions to obtain the Snap Gun.", "Use it on a jewelry store's rear door and look in the storeroom for the safe-code note while maintaining stealth."]
     },
     {
-      "id": "maximum-withdrawal", "name": "Maximum Withdrawal", "description": "Rob 5 bank vaults and get away", "descriptionType": "source-condition",
-      "tier": "silver", "points": 40, "hidden": false, "secret": false, "story": false, "missable": false, "category": "robberies", "phase": "misc", "chapter": 4,
-      "steps": ["Complete the optional Chapter 4 mission That's Where The Money Is… to unlock bank vaults.", "Rob five vaults and successfully escape after each. Bring a partner if you want to split the loot.", "Finish all eight vaults when working toward A Long Road."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "229–232"
+      "id": "maximum-withdrawal", "name": "Maximum Withdrawal", "tier": "silver", "points": 40, "description": "Rob five bank vaults and escape each time.",
+      "phase": "misc", "category": "robberies", "hidden": false, "chapter": 4, "sourceLines": "229–233",
+      "guide": ["Unlock vault robberies through the optional Chapter 4 mission That's Where The Money Is….", "Rob five vaults and get away. Bring a partner if you want to split the loot; finish all eight for 100%."]
     },
     {
-      "id": "a-classic-blitz-play", "name": "A Classic Blitz Play", "description": "Rob an armored truck and get away", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 10, "hidden": false, "secret": false, "story": false, "missable": false, "category": "robberies", "phase": "misc", "chapter": null,
-      "steps": ["Find an armored truck and use a sticky bomb to open it, then take the money and escape.", "Alternatively, the notes report that robbing a bank vault and escaping can also trigger this trophy."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "234–237"
+      "id": "a-classic-blitz-play", "name": "A Classic Blitz Play", "tier": "bronze", "points": 10, "description": "Rob an armored truck and make your escape.",
+      "phase": "misc", "category": "robberies", "hidden": false, "sourceLines": "234–237",
+      "guide": ["Attack an armored truck; the notes suggest using a sticky bomb.", "Take the robbery through to a successful escape. The source also says escaping after a bank vault robbery can satisfy this reward."]
     },
     {
-      "id": "the-goodtime-state", "name": "The Goodtime State", "description": "Explore all of Leonida", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 20, "hidden": false, "secret": false, "story": false, "missable": false, "category": "exploration", "phase": "collections", "chapter": null,
-      "steps": ["Travel over the whole map to remove its fog of war.", "Use a plane to cover large areas quickly and revisit any patches still obscured on the map."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "239–242"
+      "id": "the-goodtime-state", "name": "The Goodtime State", "tier": "bronze", "points": 20, "description": "Uncover the whole Leonida map.",
+      "phase": "collections", "category": "exploration", "hidden": false, "sourceLines": "239–242",
+      "guide": ["Explore until no map fog remains across the state.", "Use a plane to cover large unexplored areas quickly, then inspect the map for missed patches."]
     },
     {
-      "id": "pest-control", "name": "Pest Control", "description": "Rob an illegal operation belonging to each gang", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 20, "hidden": false, "secret": false, "story": false, "missable": false, "category": "robberies", "phase": "misc", "chapter": null,
-      "steps": ["Find and rob at least one illegal operation controlled by each of the nine gangs.", "Make sure you visit all nine gangs rather than repeating operations for a single gang.", "For 100% completion, continue until all 39 operations are finished."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "244–247"
+      "id": "pest-control", "name": "Pest Control", "tier": "bronze", "points": 20, "description": "Rob an illegal operation from every gang.",
+      "phase": "misc", "category": "robberies", "hidden": false, "sourceLines": "244–248",
+      "guide": ["Track which gangs you have targeted and complete at least one operation for each of the nine gangs.", "For 100% completion, clear the full collection of 39 gang operations."]
     },
     {
-      "id": "in-the-beginning", "name": "In The Beginning…", "description": "Enjoy a cocktail with a view of Ocean Beach", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 5, "hidden": true, "secret": true, "story": false, "missable": false, "category": "misc", "phase": "misc", "chapter": null,
-      "steps": ["The stated objective is to enjoy a cocktail overlooking Ocean Beach.", "The supplied notes do not identify the exact venue or interaction. Keep this unchecked until you see the in-game unlock."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "250–253", "uncertainty": "Exact unlock steps are not yet confirmed in the source."
+      "id": "in-the-beginning", "name": "In The Beginning…", "tier": "bronze", "points": 5, "description": "Enjoy a cocktail overlooking Ocean Beach.",
+      "phase": "misc", "category": "leisure", "hidden": true, "sourceLines": "250–253",
+      "guide": ["The supplied condition calls for a cocktail with an Ocean Beach view.", "Keep this entry for a later check against the game's trophy information; the notes provide no verified interaction sequence."],
+      "caveat": "The exact location and steps are unconfirmed."
     },
     {
-      "id": "capital-offense", "name": "Capital Offense", "description": "Smash your way out of a vehicle showroom in classic style", "descriptionType": "official",
-      "tier": "bronze", "points": 5, "hidden": true, "secret": true, "story": false, "missable": false, "category": "misc", "phase": "misc", "chapter": null,
-      "steps": ["The source condition is to drive a car out of a vehicle showroom through its display window.", "Use the in-game notification to confirm completion; the notes do not name a specific showroom or provide tested steps."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "255–259", "uncertainty": "The condition is supplied, but the exact execution is unconfirmed."
+      "id": "capital-offense", "name": "Capital Offense", "tier": "bronze", "points": 5, "description": "Drive a showroom car out through its display window.",
+      "phase": "misc", "category": "vehicles", "hidden": true, "sourceLines": "255–259",
+      "guide": ["The source describes taking a car through a vehicle showroom's glass display.", "Use the listed action as the objective; no specific showroom or confirmed sequence is supplied."],
+      "caveat": "The notes have not confirmed the detailed unlock method."
     },
     {
-      "id": "lets-go-bowling", "name": "Let's Go Bowling", "description": "Follow-through at the Kolt & Associates' bowling alley", "descriptionType": "official",
-      "tier": "bronze", "points": 5, "hidden": true, "secret": true, "story": false, "missable": false, "category": "robberies", "phase": "misc", "chapter": null,
-      "steps": ["The source guide directs you to rob Kingpin Bowling in Port Gellhorn.", "Collect the watch, the Gutterball Moreland 850 shotgun, and the safe's valuables.", "Escape the police after the robbery. The official description uses the different venue name Kolt & Associates."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "261–265", "uncertainty": "The guide's venue name and the supplied official description differ; both are retained rather than silently reconciled."
+      "id": "lets-go-bowling", "name": "Let's Go Bowling", "tier": "bronze", "points": 5, "description": "Rob the Port Gellhorn bowling venue and evade police.",
+      "phase": "misc", "category": "robberies", "hidden": true, "sourceLines": "261–265",
+      "guide": ["The walkthrough identifies Kingpin Bowling in Port Gellhorn as the robbery site.", "Take the watch, the Gutterball Moreland 850 shotgun and the safe, then lose the police."],
+      "caveat": "The supplied description instead names Kolt & Associates. That venue-name conflict is unresolved."
     },
     {
-      "id": "personal-best", "name": "Personal Best", "description": "A partnership with mass appeal", "descriptionType": "official",
-      "tier": "bronze", "points": 5, "hidden": true, "secret": true, "story": false, "missable": false, "category": "partner", "phase": "misc", "chapter": null,
-      "steps": ["Bring your partner to a fitness club and train Strength.", "Training one character also improves the other's Strength according to the notes.", "Continue until both characters have reached maximum Strength."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "267–271"
+      "id": "personal-best", "name": "Personal Best", "tier": "bronze", "points": 5, "description": "Maximize Strength for both protagonists.",
+      "phase": "challenges", "category": "training", "hidden": false, "sourceLines": "267–271",
+      "guide": ["Take your partner to fitness clubs and train together.", "Keep training until both characters' Strength is full. The notes say training one partner boosts the other too."]
     },
     {
-      "id": "actions-speak-louder", "name": "Actions Speak Louder", "description": "Choices made (for better or worse)", "descriptionType": "official",
-      "tier": "bronze", "points": 5, "hidden": false, "secret": false, "story": false, "missable": false, "category": "misc", "phase": "misc", "chapter": null,
-      "steps": ["Accumulate 500 actions that affect your Criminal Profile as you play.", "Let ordinary play contribute instead of pushing your profile to Irredeemable; the notes warn that this profile state is permanent."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "273–277"
+      "id": "actions-speak-louder", "name": "Actions Speak Louder", "tier": "bronze", "points": 5, "description": "Perform 500 actions that affect your Criminal Profile.",
+      "phase": "misc", "category": "profile", "hidden": false, "sourceLines": "273–277",
+      "guide": ["Continue normal play while actions that influence the Criminal Profile accumulate toward 500.", "Watch your profile status: the notes say reaching Irredeemable is permanent, so avoid forcing that state just to increase the count."]
     },
     {
-      "id": "bad-luck-i-guess", "name": "Bad Luck, I Guess", "description": "Second time's the charm", "descriptionType": "official",
-      "tier": "bronze", "points": 5, "hidden": true, "secret": true, "story": false, "missable": false, "category": "misc", "phase": "misc", "chapter": null,
-      "steps": ["The supplied source does not disclose the unlock condition.", "No reliable sequence of actions can be derived from the description alone. Leave this trophy pending until the in-game unlock or a confirmed method is available."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "279–283", "uncertainty": "Unlock condition and steps are undisclosed. No second-attempt mechanic is assumed."
+      "id": "bad-luck-i-guess", "name": "Bad Luck, I Guess", "tier": "bronze", "points": 5, "description": "Requirement undisclosed; the supplied hint is “Second time's the charm.”",
+      "phase": "misc", "category": "mysteries", "hidden": true, "sourceLines": "279–283",
+      "guide": ["The notes supply the hint Second time's the charm without an unlock condition.", "Leave this unchecked until it unlocks or the game's description establishes the requirement."],
+      "caveat": "No confirmed method is available in the supplied source."
     },
     {
-      "id": "the-truth-is-out-there", "name": "The Truth Is Out There", "description": "What the hell just happened?", "descriptionType": "official",
-      "tier": "bronze", "points": 5, "hidden": true, "secret": true, "story": false, "missable": false, "category": "misc", "phase": "misc", "chapter": null,
-      "steps": ["The supplied source leaves this trophy's condition undisclosed.", "Use an actual in-game unlock as confirmation. The description alone does not establish an encounter, location, or required action."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "285–289", "uncertainty": "Unlock condition and steps are not confirmed."
+      "id": "the-truth-is-out-there", "name": "The Truth Is Out There", "tier": "bronze", "points": 5, "description": "Requirement undisclosed; the supplied hint asks “What the hell just happened?”",
+      "phase": "misc", "category": "mysteries", "hidden": true, "sourceLines": "285–289",
+      "guide": ["The supplied text gives only the hint What the hell just happened?.", "Check the game's trophy information when available. There is no supported route to prescribe from these notes."],
+      "caveat": "Both the unlock condition and the method remain unknown."
     },
     {
-      "id": "ten-pin", "name": "Ten Pin", "description": "Bowl 'em over with a melee drive-by", "descriptionType": "official",
-      "tier": "bronze", "points": 5, "hidden": true, "secret": true, "story": false, "missable": false, "category": "combat", "phase": "misc", "chapter": null,
-      "steps": ["The supplied description points to a melee drive-by.", "The source does not confirm the vehicle, target count, or exact input sequence. Avoid treating any specific setup as a verified solution."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "291–295", "uncertainty": "A melee drive-by is indicated, but tested unlock steps are unavailable."
+      "id": "ten-pin", "name": "Ten Pin", "tier": "bronze", "points": 5, "description": "Perform the melee drive-by suggested by the supplied description.",
+      "phase": "misc", "category": "combat", "hidden": true, "sourceLines": "291–295",
+      "guide": ["The description points toward a melee drive-by with the phrase Bowl 'em over.", "Treat that wording as a clue. The notes do not specify a vehicle, weapon, target count or confirmed sequence."],
+      "caveat": "A precise unlock method has not been confirmed."
     },
     {
-      "id": "dime-on-the-dollar", "name": "Dime on the Dollar", "description": "Earn $250,000 by laundering Marked Bills through contacts", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 20, "hidden": false, "secret": false, "story": false, "missable": false, "category": "money", "phase": "misc", "chapter": 3,
-      "steps": ["Obtain the Dye Pack Jammer during Chapter 3.", "Collect marked bills from banks and Payday Loans robberies, then sell them to fences. Yasmani is the notes' recommended buyer for the highest payout.", "Launder $250,000 in total; this is cumulative and does not need to be earned in a single sale."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "297–300"
+      "id": "dime-on-the-dollar", "name": "Dime on the Dollar", "tier": "bronze", "points": 20, "description": "Earn a cumulative $250,000 laundering Marked Bills through contacts.",
+      "phase": "misc", "category": "money", "hidden": false, "chapter": 3, "sourceLines": "297–300",
+      "guide": ["Obtain the Dye Pack Jammer in Chapter 3, then collect Marked Bills from banks and Payday Loans.", "Sell the bills to fences until earnings reach $250,000 across transactions. Yasmani is listed as the highest-paying contact."]
     },
     {
-      "id": "treat-yo-self", "name": "Treat Yo Self", "description": "Spend $100,000 across all stores in total", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 15, "hidden": false, "secret": false, "story": false, "missable": false, "category": "money", "phase": "misc", "chapter": null,
-      "steps": ["Spend money at shops until your combined purchases reach $100,000.", "Weapons, vehicle customization, and tattoos are suggested ways to build the total while buying useful items."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "302–305"
+      "id": "treat-yo-self", "name": "Treat Yo Self", "tier": "bronze", "points": 15, "description": "Spend $100,000 in stores over time.",
+      "phase": "misc", "category": "money", "hidden": false, "sourceLines": "302–305",
+      "guide": ["Let purchases across stores accumulate toward the $100,000 total.", "The source recommends weapons, vehicle modifications and tattoos as quick ways to spend the required amount."]
     },
     {
-      "id": "little-boxes", "name": "Little Boxes", "description": "Buy all garages", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 15, "hidden": false, "secret": false, "story": false, "missable": false, "category": "money", "phase": "misc", "chapter": 2,
-      "steps": ["Finish Daily Driver in Chapter 2 to unlock the Vice City Real Estate app.", "Purchase all eight buyable garages, budgeting approximately $160,000 in total.", "The four garages awarded by the story do not count toward these eight purchases."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "307–310"
+      "id": "little-boxes", "name": "Little Boxes", "tier": "bronze", "points": 15, "description": "Purchase all eight available garages.",
+      "phase": "misc", "category": "property", "hidden": false, "chapter": 2, "sourceLines": "307–310",
+      "guide": ["Finish Daily Driver in Chapter 2 to access the Vice City Real Estate app.", "Buy its eight garages, budgeting about $160,000 in total. The four story-provided garages do not count."]
     },
     {
-      "id": "on-the-spot", "name": "On the Spot", "description": "Register 10 vehicles in the Scooter Bros app", "descriptionType": "source-condition",
-      "tier": "bronze", "points": 15, "hidden": false, "secret": false, "story": false, "missable": false, "category": "money", "phase": "misc", "chapter": 2,
-      "steps": ["Complete Moses' Chapter 2 mission to obtain the Scooter Bros app.", "Take stolen vehicles to his garage in Port Gellhorn and pay to register them.", "Register ten vehicles. Keep garage space available and use inexpensive cars or bikes to reduce the registration cost."], "whenMissed": null, "sources": ["gta-guide"], "sourceLines": "312–315"
+      "id": "on-the-spot", "name": "On the Spot", "tier": "bronze", "points": 15, "description": "Register ten vehicles through Scooter Bros.",
+      "phase": "misc", "category": "vehicles", "hidden": false, "chapter": 2, "sourceLines": "312–315",
+      "guide": ["Unlock the Scooter Bros app through Moses's Chapter 2 mission and take stolen vehicles to his Port Gellhorn garage.", "Keep garage space free and pay to register ten vehicles. Cheap cars and bikes help contain the cost."]
     }
   ]
 }
