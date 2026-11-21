@@ -1,314 +1,444 @@
 import {
-  OLD_STORAGE_KEY, STORAGE_KEY, STAGES, exportJournal, freshJournal, getProgress,
-  getStages, importJournal, isConcealed, selectTrophies, settlePlatinum,
+  TIERS, ROUTE, SAVE_KEY, LEGACY_KEY, newJournal, validateCatalogue, updatePlatinum,
+  searchCatalogue, progressFor, covered, visibleName, packJournal, readJournal,
 } from './model.js';
 
-const byId = name => document.getElementById(name);
-const escapeText = value => String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
-const journal = freshJournal();
-let catalogue;
-let pendingImport;
-let lastFocus;
+const find = id => document.getElementById(id);
+const blankFilters = () => ({ query: '', tier: '', stage: '', filter: 'all' });
+const filters = blankFilters();
+let journal = newJournal();
+let publication;
+let entries;
+let index;
+let activeNote;
+let backup;
 let toastTimer;
 
-function say(message) {
-  const toast = byId('toast');
+function element(tag, text, className) {
+  const node = document.createElement(tag);
+  if (text != null) node.textContent = text;
+  if (className) node.className = className;
+  return node;
+}
+
+function button(text, command, value = '', className) {
+  const node = element('button', text, className);
+  node.type = 'button';
+  node.dataset.command = command;
+  node.dataset.value = value;
+  return node;
+}
+
+function pressed(node, on) {
+  node.setAttribute('aria-pressed', String(on));
+  return node;
+}
+
+function announce(message) {
+  const toast = find('toast');
   toast.textContent = message;
-  toast.classList.add('visible');
+  toast.classList.add('shown');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.classList.remove('visible'), 3400);
+  toastTimer = setTimeout(() => toast.classList.remove('shown'), 3500);
 }
 
-function store() {
+function save() {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(exportJournal(journal)));
+    localStorage.setItem(SAVE_KEY, JSON.stringify(packJournal(journal)));
   } catch {
-    say('This browser cannot save locally. Export a copy before leaving.');
+    announce('Local saving is unavailable. Export a backup to keep these changes.');
   }
 }
 
-function restoreSaved() {
+function loadProgress() {
   try {
-    const current = localStorage.getItem(STORAGE_KEY);
-    const legacy = current ? null : localStorage.getItem(OLD_STORAGE_KEY);
-    if (!current && !legacy) return;
-    const saved = importJournal(JSON.parse(current ?? legacy), catalogue);
-    Object.assign(journal, saved);
-    if (legacy) {
-      store();
-      say('Your earlier checklist is ready in the Ledger.');
-    }
+    const current = localStorage.getItem(SAVE_KEY);
+    const saved = current ?? localStorage.getItem(LEGACY_KEY);
+    if (saved === null) return;
+    journal = readJournal(JSON.parse(saved), entries);
+    if (current === null) save();
   } catch {
-    say('Saved notes could not be read. You can import a backup or start fresh.');
+    announce('Saved progress could not be opened. You can import a backup.');
   }
 }
 
-function renderProgress() {
-  const progress = getProgress(catalogue, journal.earned);
-  byId('earned-count').textContent = progress.count;
-  byId('percent').textContent = `${Math.round(progress.percent)}%`;
-  byId('progress-ring').style.setProperty('--progress', `${progress.percent}%`);
-  byId('score').textContent = progress.score.toLocaleString('en-US');
-  byId('score-progress').value = progress.score;
-  byId('progress-message').textContent = progress.count === 55
-    ? 'Leonida Legend. Every entry is yours.'
-    : progress.count === 0 ? 'Every trip starts somewhere.' : `${55 - progress.count} more little victories ahead.`;
-  byId('medal-counts').innerHTML = ['platinum', 'gold', 'silver', 'bronze'].map(tier => {
-    const group = catalogue.filter(item => item.tier === tier);
-    const count = group.filter(item => journal.earned.has(item.id)).length;
-    return `<button class="medal-chip" type="button" data-medal="${tier}" aria-pressed="${journal.tier === tier}" aria-label="${tier}: ${count} of ${group.length}; filter collection"><span class="medal-dot ${tier}"></span><span>${count}<small> / ${group.length}</small><b>${tier}</b></span></button>`;
-  }).join('');
+function renderDashboard() {
+  const { percent, score, count, tiers } = progressFor(entries, journal.earned);
+  find('percent').textContent = `${Math.round(percent)}%`;
+  find('dial').style.setProperty('--fill', `${percent}%`);
+  find('earned-count').textContent = count;
+  find('score').textContent = score.toLocaleString('en-US');
+  find('score-bar').value = score;
+  find('medals').replaceChildren(...Object.entries(TIERS).map(([tier, total]) => {
+    const control = pressed(button(null, 'tier', tier, `medal ${tier}`), filters.tier === tier);
+    control.append(element('span', tier), element('strong', `${tiers[tier]} / ${total}`));
+    return control;
+  }));
 }
 
 function renderRoute() {
-  const route = getStages(catalogue, journal);
-  byId('route-stages').innerHTML = route.map((stage, index) => `<button class="route-stage ${stage.done === stage.total ? 'complete' : ''}" type="button" data-stage="${stage.id}" aria-pressed="${journal.stage === stage.id}" ${stage.next ? 'aria-current="step"' : ''}><span class="route-number">${stage.done === stage.total ? '✓' : String(index + 1).padStart(2, '0')}</span><span class="route-name">${escapeText(stage.label)}<small>${stage.done} / ${stage.total}</small></span></button>`).join('');
-  if (!byId('route-notes').hidden) renderRouteNotes();
+  const stops = ROUTE.map(([id, title]) => {
+    const batch = entries.filter(entry => entry.phase === id);
+    const remaining = batch.filter(entry => !journal.earned.has(entry.id));
+    return { id, title, total: batch.length, remaining };
+  });
+  const next = stops.find(stop => stop.remaining.some(entry => entry.missable)) ??
+    stops.find(stop => stop.remaining.length);
+  find('route-stages').replaceChildren(...stops.map(stop => {
+    const control = pressed(button(null, 'stage', stop.id), filters.stage === stop.id);
+    if (stop === next) control.setAttribute('aria-current', 'step');
+    const status = stop === next ? ' · Next' : stop.remaining.length ? '' : ' · ✓';
+    control.append(element('strong', stop.title), element('span', `${stop.total - stop.remaining.length} / ${stop.total}${status}`));
+    return control;
+  }));
 }
 
-function renderRouteNotes() {
-  byId('route-notes').innerHTML = `<h3>Take the long way, one chapter at a time.</h3><ol>${STAGES.map(stage => `<li><b>${escapeText(stage.label)}.</b> ${escapeText(stage.tip)}</li>`).join('')}</ol><p class="source-credit">The source notes estimate about 200 hours and report no mission replay or New Game+. Treat the in-game completion screen as your final checklist.</p>`;
+function pointLabel(entry) {
+  return entry.tier === 'platinum' ? 'Mythic' : `${entry.points} G`;
 }
 
-function trophyMarkup(item) {
-  const hidden = isConcealed(item, journal);
-  const earned = journal.earned.has(item.id);
-  const name = hidden ? 'Hidden trophy' : item.name;
-  const summary = hidden ? 'A story still under cover. Reveal it whenever you like.' : item.description;
-  const markers = [earned ? '<span class="tag earned-tag">✓ Collected</span>' : '', item.missable ? '<span class="tag caution-tag">Potentially missable</span>' : '', item.story ? '<span class="tag">Story</span>' : '', item.hidden ? '<span class="tag secret-tag">Hidden</span>' : ''].filter(Boolean).join('');
-  return `<article class="trophy ${earned ? 'is-earned' : ''} ${hidden ? 'is-hidden' : ''}" data-card="${item.id}">
-    <div class="trophy-top"><span class="tier-symbol ${item.tier}" aria-hidden="true">${hidden ? '✦' : '◆'}</span><span class="tier-name">${item.tier}</span><span class="points">${item.tier === 'platinum' ? 'MYTHIC' : `${item.points} G`}</span><label class="check-wrap"><span class="sr-only">Mark ${escapeText(name)} earned</span><input type="checkbox" data-earned="${item.id}" ${earned ? 'checked' : ''}></label></div>
-    <button class="trophy-copy" type="button" data-open="${item.id}"><h3>${escapeText(name)}</h3><p>${escapeText(summary)}</p></button>
-    <div class="tags">${markers || `<span class="tag">${escapeText(item.category)}</span>`}</div>
-    <div class="trophy-bottom"><span>${item.chapter ? `CHAPTER ${item.chapter} ONWARD` : item.tier === 'platinum' ? 'THE FINAL MILESTONE' : 'AT YOUR OWN PACE'}</span><button type="button" data-open="${item.id}">${hidden ? 'Reveal note' : 'Field note'} ↗</button></div>
-  </article>`;
+function card(entry) {
+  const hidden = covered(entry, journal);
+  const earned = journal.earned.has(entry.id);
+  const title = visibleName(entry, journal);
+  const article = element('article', null, `entry${earned ? ' collected' : ''}`);
+  const meta = element('div', null, 'entry-meta');
+  meta.append(element('span', `◆ ${entry.tier}`, `tier ${entry.tier}`), element('span', pointLabel(entry)));
+
+  const check = element('input');
+  check.type = 'checkbox';
+  check.checked = earned;
+  check.dataset.command = 'mark';
+  check.dataset.value = entry.id;
+  check.setAttribute('aria-label', `Mark ${title} collected`);
+  meta.append(check);
+
+  const copy = element('div', null, 'entry-copy');
+  const heading = element('h3');
+  heading.append(button(title, 'open', entry.id, 'entry-title'));
+  copy.append(heading, element('p', hidden ? 'Reveal the name and unlock conditions when you’re ready.' : entry.description));
+
+  const tags = [];
+  if (earned) tags.push('Collected');
+  if (entry.missable) tags.push('Potentially missable');
+  if (entry.story) tags.push('Story');
+  if (entry.hidden) tags.push('Hidden');
+  const labels = element('div', null, 'tags');
+  for (const tag of tags.length ? tags : [entry.category]) labels.append(element('span', tag));
+
+  const foot = element('div', null, 'entry-foot');
+  const chapter = !hidden && entry.chapter ? `Chapter ${entry.chapter}` : '';
+  foot.append(element('span', chapter), button(hidden ? 'Reveal note ↗' : 'Field note ↗', 'open', entry.id, 'subtle'));
+  article.append(meta, copy, labels, foot);
+  return article;
 }
 
-function renderFilters() {
+function renderCollection() {
+  const result = searchCatalogue(entries, journal, filters);
+  const items = find('trophy-grid');
+  const activeStage = ROUTE.find(([id]) => id === filters.stage);
+  const suffix = activeStage ? ` · ${activeStage[1]}` : '';
+  find('result-count').textContent = `${result.length} of ${entries.length} trophies${suffix}`;
+  find('empty').hidden = result.length !== 0;
+  find('clear').hidden = !filters.query && !filters.stage && !filters.tier && filters.filter === 'all';
+  find('tier').value = filters.tier;
+  find('sort').value = journal.options.sort;
+  find('cover').checked = journal.options.spoilers;
+  for (const layout of document.querySelectorAll('[data-command="layout"]')) {
+    pressed(layout, layout.dataset.value === journal.options.view);
+  }
   const choices = [
-    ['all', 'Everything', catalogue.length],
-    ['story', 'Story', catalogue.filter(item => item.story).length],
-    ['hidden', 'Under cover', catalogue.filter(item => item.hidden).length],
-    ['missable', 'Missable', catalogue.filter(item => item.missable).length],
+    ['all', 'All', entries.length],
+    ['story', 'Story', entries.filter(entry => entry.story).length],
+    ['hidden', 'Hidden', entries.filter(entry => entry.hidden).length],
+    ['missable', 'Missable', entries.filter(entry => entry.missable).length],
     ['earned', 'Collected', journal.earned.size],
   ];
-  byId('filters').innerHTML = choices.map(([id, label, count]) => `<button type="button" data-filter="${id}" aria-pressed="${journal.filter === id}">${label}<span>${count}</span></button>`).join('');
+  find('filters').replaceChildren(...choices.map(([key, label, count]) => {
+    const control = pressed(button(null, 'filter', key), filters.filter === key);
+    control.append(label, element('span', count));
+    return control;
+  }));
+  items.classList.toggle('list-view', journal.options.view === 'list');
+  items.replaceChildren(...result.map(card));
+  items.setAttribute('aria-busy', 'false');
 }
 
-function renderCards() {
-  const result = selectTrophies(catalogue, journal);
-  const grid = byId('trophy-grid');
-  grid.classList.toggle('compact', journal.view === 'list');
-  grid.innerHTML = result.map(trophyMarkup).join('');
-  grid.setAttribute('aria-busy', 'false');
-  byId('empty-state').hidden = result.length > 0;
-  const activeStage = STAGES.find(item => item.id === journal.stage);
-  byId('result-count').textContent = `Showing ${result.length} of ${catalogue.length}${activeStage ? ` · ${activeStage.label}` : ''}`;
-  byId('clear-filters').hidden = journal.filter === 'all' && journal.tier === 'all' && !journal.stage && !journal.search;
-  byId('tier').value = journal.tier;
-  byId('sort').value = journal.sort;
-  byId('spoiler-switch').setAttribute('aria-checked', String(journal.spoilers));
-  document.querySelectorAll('[data-view]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.view === journal.view)));
-  renderFilters();
-}
-
-function renderAll() {
-  renderProgress();
+function refresh() {
+  const previous = document.activeElement;
+  renderDashboard();
   renderRoute();
-  renderCards();
+  renderCollection();
+  if (previous.isConnected || !previous.dataset.command) return;
+  const match = Array.from(document.querySelectorAll('[data-command]')).find(node =>
+    node.tagName === previous.tagName && node.className === previous.className &&
+    node.dataset.command === previous.dataset.command && node.dataset.value === previous.dataset.value);
+  (match ?? find('collection-title')).focus({ preventScroll: true });
 }
 
-function revealOrEarn(id, earn) {
-  const item = catalogue.find(entry => entry.id === id);
-  if (!item) return;
-  if (earn) {
-    if (item.tier === 'platinum') {
-      say('The platinum entry follows the other 54 trophies automatically.');
+function sourceLinks() {
+  const list = element('ul', null, 'sources');
+  for (const ref of publication.references) {
+    const link = element('a', ref.title);
+    link.href = ref.url;
+    link.target = '_blank';
+    link.rel = 'noreferrer';
+    const item = element('li');
+    item.append(link);
+    list.append(item);
+  }
+  return list;
+}
+
+function detailTitle(text) {
+  const heading = element('h2', text);
+  heading.id = 'detail-title';
+  return heading;
+}
+
+function renderNote(entry) {
+  const body = find('detail-body');
+  const actions = element('div', null, 'dialog-actions');
+  const collected = journal.earned.has(entry.id);
+  if (covered(entry, journal)) {
+    actions.append(button('Reveal this note', 'reveal', entry.id, 'action'), button('Mark as collected', 'mark', entry.id, 'subtle'));
+    body.replaceChildren(detailTitle('Hidden trophy'), element('p', 'This field note contains spoilers.'), actions);
+    return;
+  }
+
+  if (entry.tier !== 'platinum') {
+    actions.append(button(collected ? 'Undo checkmark' : 'Mark as collected', 'mark', entry.id, 'action'));
+  } else {
+    actions.append(element('p', collected ? '✓ Collected' : 'Awarded automatically after the other 54 trophies.'));
+  }
+  if (entry.hidden && journal.revealed.has(entry.id)) actions.append(button('Cover this note', 'conceal', entry.id, 'subtle'));
+  body.replaceChildren(
+    element('p', `${entry.tier} · ${pointLabel(entry)}`, `eyebrow tier ${entry.tier}`),
+    detailTitle(entry.name), element('p', entry.description), actions,
+    element('h3', 'Field note'), element('p', entry.guide),
+  );
+  if (entry.caveat) body.append(element('p', entry.caveat, 'note-caveat'));
+  body.append(element('h3', 'Sources'), element('p', `Trophy source notes, ${publication.sourceDate}, lines ${entry.sourceLines}.`), sourceLinks());
+}
+
+function openNote(id) {
+  activeNote = index.get(id);
+  if (!activeNote) return;
+  renderNote(activeNote);
+  find('detail').showModal();
+}
+
+function showSources() {
+  activeNote = null;
+  find('detail-body').replaceChildren(
+    detailTitle('About the Ledger'),
+    element('p', 'This unofficial guide follows the supplied November 18, 2026 trophy notes. They list one platinum, two gold, six silver and 46 bronze trophies. The numbered Xbox rewards total 1,000 G.'),
+    element('p', 'The source estimates about 28 hidden trophies. The Ledger uses editorial spoiler covers because the notes do not identify every official hidden reward. Positive Mental Attitude is flagged because the Chapter 1 meditation requirement is uncertain.'),
+    element('p', 'Your checkmarks live in this browser. Export a backup to move them to another device.'),
+    sourceLinks(),
+  );
+  find('detail').showModal();
+}
+
+function updateNote(id, command) {
+  const entry = index.get(id);
+  if (command === 'mark') {
+    if (entry.tier === 'platinum') {
+      refresh();
+      announce('Platinum follows the other 54 checkmarks automatically.');
       return;
     }
-    journal.earned[earn === 'yes' ? 'add' : 'delete'](id);
-    settlePlatinum(journal, catalogue);
-    say(earn === 'yes' ? 'Added to your journey.' : 'Checkmark removed.');
-  } else {
+    const removed = journal.earned.delete(id);
+    if (!removed) journal.earned.add(id);
+    updatePlatinum(entries, journal.earned);
+    announce(removed ? 'Checkmark removed.' : 'Trophy collected.');
+  } else if (command === 'reveal') {
     journal.revealed.add(id);
-  }
-  store();
-  renderAll();
-  if (byId('guide').open) showGuide(id);
-}
-
-function openDialog(dialog) {
-  lastFocus = document.activeElement;
-  dialog.showModal();
-}
-
-function showGuide(id) {
-  const item = catalogue.find(entry => entry.id === id);
-  if (!item) return;
-  const body = byId('guide-content');
-  if (isConcealed(item, journal)) {
-    body.innerHTML = `<div class="locked"><span aria-hidden="true">✦</span><h2 id="guide-title">A story for another day.</h2><p>This note is under the spoiler cover. Reveal it when you’re ready, or mark it collected.</p><button class="button" type="button" data-reveal="${item.id}">Reveal this note</button> <button class="button button-outline" type="button" data-mark="${item.id}">I’ve collected it</button></div>`;
   } else {
-    const refs = window.publication.references.map(ref => `<a href="${escapeText(ref.url)}" target="_blank" rel="noreferrer">${escapeText(ref.title)}</a>`).join(' · ');
-    body.innerHTML = `<div class="guide-heading"><span class="tier-symbol ${item.tier}">◆</span><span>${item.tier}</span><span class="points">${item.tier === 'platinum' ? 'MYTHIC' : `${item.points} G`}</span></div><h2 id="guide-title">${escapeText(item.name)}</h2><p class="guide-description">${escapeText(item.description)}</p><div class="guide-actions"><button class="button" type="button" data-mark="${item.id}">${journal.earned.has(item.id) ? '✓ Collected · undo' : 'Mark as collected'}</button>${item.hidden && journal.revealed.has(item.id) ? `<button class="quiet-button" type="button" data-conceal="${item.id}">Cover this note</button>` : ''}</div>${item.missable ? '<aside class="caveat"><b>KEEP IN MIND</b> The Chapter 1 balcony meditation may be missable. The notes do not confirm whether it is required.' : ''}${item.caveat ? `<aside class="caveat"><b>SOURCE NOTE</b> ${escapeText(item.caveat)}</aside>` : ''}<h3 class="subheading">Field route</h3><p class="guide-description">${escapeText(item.guide)}</p><div class="citations"><b>Source trail</b><p>${refs}</p><small>Based on the supplied notes, dated November 18, 2026. Source lines: ${escapeText(item.sourceLines ?? 'see trophy source notes')}.</small></div>`;
+    journal.revealed.delete(id);
   }
-  openDialog(byId('guide'));
+  save();
+  refresh();
+  if (find('detail').open && activeNote) {
+    renderNote(activeNote);
+    (find('detail-body').querySelector('.action') ?? find('detail').querySelector('.close')).focus();
+  }
 }
 
-function showAbout() {
-  byId('about-copy').innerHTML = `<p>This fan-made journal is based on the supplied November 18, 2026 notes. It lists 55 rewards: 1 platinum, 2 gold, 6 silver and 46 bronze. The 54 numerical Xbox rewards total 1,000G; the Mythic equivalent has no number given.</p><p>The notes describe about 28 hidden rewards but do not provide a per-trophy list. The hidden labels here are editorial spoiler covers. Positive Mental Attitude is flagged as potentially missable because the early meditation requirement is uncertain.</p><p>The 100% completion trophy and platinum have different requirements. Story progress remains available in free roam after the credits, according to the supplied source. No account is needed: your checklist is stored in this browser, and you can export a JSON backup.</p><div class="citations"><b>References named in the notes</b><p>${window.publication.references.map(ref => `<a href="${escapeText(ref.url)}" target="_blank" rel="noreferrer">${escapeText(ref.title)}</a>`).join('<br>')}</p><small>Source claims are presented as supplied rather than independently verified.</small></div>`;
-  openDialog(byId('about'));
+function exportBackup() {
+  const blob = new Blob([JSON.stringify(packJournal(journal), null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = element('a');
+  link.href = url;
+  link.download = `leonida-ledger-${new Date().toISOString().slice(0, 10)}.json`;
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  announce('Progress backup downloaded.');
 }
 
-function downloadBackup() {
-  const url = URL.createObjectURL(new Blob([JSON.stringify(exportJournal(journal), null, 2)], { type: 'application/json' }));
-  const anchor = Object.assign(document.createElement('a'), { href: url, download: `leonida-ledger-${new Date().toISOString().slice(0, 10)}.json` });
-  anchor.click();
-  URL.revokeObjectURL(url);
-  say('Your Ledger backup is ready.');
-}
-
-async function inspectBackup(file) {
+async function inspectBackup(event) {
+  const input = event.currentTarget;
+  const [file] = input.files;
+  input.value = '';
   if (!file) return;
   try {
-    if (file.size > 1024 * 1024) throw new Error('Choose a backup smaller than 1 MB.');
-    pendingImport = importJournal(JSON.parse(await file.text()), catalogue);
-    byId('restore-message').textContent = `This file has ${pendingImport.earned.size} collected trophies. This browser has ${journal.earned.size}.`;
-    openDialog(byId('restore'));
+    if (file.size > 1024 ** 2) throw new Error('Choose a backup smaller than 1 MB.');
+    backup = readJournal(JSON.parse(await file.text()), entries);
+    find('restore-message').textContent = `Backup: ${backup.earned.size} collected. This browser: ${journal.earned.size} collected.`;
+    find('restore').showModal();
   } catch (error) {
-    say(error.message || 'That file could not be read.');
-  } finally {
-    byId('backup-file').value = '';
+    announce(error.message);
   }
 }
 
 function restoreBackup(mode) {
-  if (!pendingImport) return;
-  journal.earned = mode === 'merge' ? new Set([...journal.earned, ...pendingImport.earned]) : new Set(pendingImport.earned);
-  journal.revealed = mode === 'merge' ? new Set([...journal.revealed, ...pendingImport.revealed]) : new Set(pendingImport.revealed);
-  settlePlatinum(journal, catalogue);
-  pendingImport = null;
-  store();
-  byId('restore').close();
-  renderAll();
-  say(mode === 'merge' ? 'The two checklists are together.' : 'Your checklist has been replaced.');
+  if (!backup) return;
+  for (const key of ['earned', 'revealed']) {
+    journal[key] = mode === 'merge' ? new Set([...journal[key], ...backup[key]]) : backup[key];
+  }
+  updatePlatinum(entries, journal.earned);
+  find('restore').close();
+  announce(mode === 'merge' ? 'Progress merged.' : 'Checklist replaced.');
+  save();
+  refresh();
 }
 
-function handleClick(event) {
-  const button = event.target.closest('button');
-  if (!button) return;
-  const data = button.dataset;
-  if (data.open) showGuide(data.open);
-  if (data.reveal) revealOrEarn(data.reveal, false);
-  if (data.mark) revealOrEarn(data.mark, journal.earned.has(data.mark) ? 'no' : 'yes');
-  if (data.conceal) { journal.revealed.delete(data.conceal); store(); renderAll(); showGuide(data.conceal); }
-  if (data.filter) { journal.filter = data.filter; journal.stage = ''; renderAll(); }
-  if (data.medal) { journal.tier = journal.tier === data.medal ? 'all' : data.medal; renderAll(); }
-  if (data.stage) { journal.stage = journal.stage === data.stage ? '' : data.stage; renderAll(); byId('collection').scrollIntoView({ behavior: 'smooth' }); }
-  if (data.view) { journal.view = data.view; store(); renderAll(); }
-  if (data.close) byId(data.close).close();
-  if (data.restore) restoreBackup(data.restore);
-  if (button.id === 'source-open') showAbout();
-  if (button.id === 'export') downloadBackup();
-  if (button.id === 'import') byId('backup-file').click();
-  if (button.id === 'clear-filters' || button.id === 'show-all') {
-    Object.assign(journal, { filter: 'all', tier: 'all', stage: '', search: '' });
-    byId('search').value = '';
-    renderAll();
-  }
-  if (button.id === 'route-toggle') {
-    const notes = byId('route-notes');
-    notes.hidden = !notes.hidden;
-    button.setAttribute('aria-expanded', String(!notes.hidden));
-    button.innerHTML = notes.hidden ? 'Open route notes <span aria-hidden="true">↗</span>' : 'Close route notes <span aria-hidden="true">×</span>';
-    if (!notes.hidden) renderRouteNotes();
-  }
-  if (button.id === 'spoiler-switch') {
-    journal.spoilers = !journal.spoilers;
-    store();
-    renderAll();
-  }
-  if (button.id === 'reload') location.reload();
+function toggleFilter(key, value) {
+  filters[key] = filters[key] === value ? '' : value;
+  refresh();
 }
 
-function connectControls() {
-  document.addEventListener('click', handleClick);
-  byId('search').addEventListener('input', event => { journal.search = event.target.value; renderCards(); });
-  byId('search').addEventListener('keydown', event => {
-    if (event.key === 'Escape' && event.currentTarget.value) {
-      event.currentTarget.value = '';
-      journal.search = '';
-      renderCards();
+const commands = {
+  open: openNote,
+  about: showSources,
+  tier: value => toggleFilter('tier', value),
+  stage(value) {
+    toggleFilter('stage', value);
+    find('collection').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  },
+  filter(value) {
+    filters.filter = value;
+    filters.stage = '';
+    refresh();
+  },
+  clear() {
+    Object.assign(filters, blankFilters());
+    find('search').value = '';
+    refresh();
+  },
+  layout(value) {
+    journal.options.view = value;
+    save();
+    refresh();
+  },
+  mark: id => updateNote(id, 'mark'),
+  reveal: id => updateNote(id, 'reveal'),
+  conceal: id => updateNote(id, 'conceal'),
+  export: exportBackup,
+  import: () => find('backup').click(),
+  restore: restoreBackup,
+  reload: () => location.reload(),
+};
+
+function bindControls() {
+  document.addEventListener('click', event => {
+    const control = event.target.closest('button[data-command]');
+    if (control) commands[control.dataset.command](control.dataset.value);
+  });
+  find('trophy-grid').addEventListener('change', event => updateNote(event.target.dataset.value, 'mark'));
+  find('search').addEventListener('input', event => {
+    filters.query = event.target.value;
+    renderCollection();
+  });
+  find('tier').addEventListener('change', event => {
+    filters.tier = event.target.value;
+    refresh();
+  });
+  find('sort').addEventListener('change', event => {
+    journal.options.sort = event.target.value;
+    save();
+    renderCollection();
+  });
+  find('cover').addEventListener('change', event => {
+    journal.options.spoilers = event.target.checked;
+    save();
+    renderCollection();
+  });
+  find('backup').addEventListener('change', inspectBackup);
+
+  document.addEventListener('keydown', event => {
+    const search = find('search');
+    if (event.key === 'Escape' && event.target === search && search.value) {
+      event.preventDefault();
+      search.value = '';
+      filters.query = '';
+      renderCollection();
+    }
+    if (event.key === '/' && !event.target.closest('input, select, textarea, [contenteditable]') && !document.querySelector('dialog[open]')) {
+      event.preventDefault();
+      search.focus();
     }
   });
-  byId('tier').addEventListener('change', event => { journal.tier = event.target.value; renderAll(); });
-  byId('sort').addEventListener('change', event => { journal.sort = event.target.value; store(); renderCards(); });
-  byId('trophy-grid').addEventListener('change', event => {
-    const id = event.target.dataset.earned;
-    if (!id) return;
-    revealOrEarn(id, event.target.checked ? 'yes' : 'no');
-  });
-  byId('backup-file').addEventListener('change', event => inspectBackup(event.target.files[0]));
   for (const dialog of document.querySelectorAll('dialog')) {
-    dialog.addEventListener('close', () => {
-      if (dialog.id === 'restore') pendingImport = null;
-      const focus = lastFocus?.isConnected ? lastFocus : byId('collection-title');
-      focus?.focus({ preventScroll: true });
-    });
     dialog.addEventListener('click', event => {
       if (event.target !== dialog) return;
-      const box = dialog.getBoundingClientRect();
-      if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) dialog.close();
+      const { left, right, top, bottom } = dialog.getBoundingClientRect();
+      if (event.clientX < left || event.clientX > right || event.clientY < top || event.clientY > bottom) dialog.close();
     });
   }
-  document.addEventListener('keydown', event => {
-    if (event.key === '/' && !event.target.closest('input,select,textarea,[contenteditable="true"]') && !document.querySelector('dialog[open]')) {
-      event.preventDefault();
-      byId('search').focus();
-    }
+  find('restore').addEventListener('close', () => { backup = null; });
+  find('detail').addEventListener('close', () => {
+    if (document.activeElement === document.body) find('collection-title').focus({ preventScroll: true });
   });
   window.addEventListener('storage', event => {
-    if (event.key !== STORAGE_KEY && event.key !== null) return;
+    if (event.key !== SAVE_KEY && event.key !== null) return;
     try {
-      Object.assign(journal, event.newValue ? importJournal(JSON.parse(event.newValue), catalogue) : freshJournal());
-      renderAll();
-      say('Another tab updated your checklist.');
+      journal = event.newValue ? readJournal(JSON.parse(event.newValue), entries) : newJournal();
+      refresh();
+      if (find('detail').open && activeNote) renderNote(activeNote);
+      announce('Progress synced from another tab.');
     } catch {
-      say('A different tab saved notes this page could not read.');
+      announce('Could not read the update from another tab.');
     }
   });
 }
 
-async function start() {
+async function enableOffline() {
+  if (!navigator.serviceWorker) return;
   try {
-    const response = await fetch('./data/trophies.json');
-    if (!response.ok) throw new Error(`Catalogue returned ${response.status}`);
-    window.publication = await response.json();
-    catalogue = window.publication.trophies;
-    const tierTotals = catalogue.reduce((counts, item) => ({ ...counts, [item.tier]: (counts[item.tier] ?? 0) + 1 }), {});
-    const points = catalogue.reduce((sum, item) => sum + item.points, 0);
-    if (catalogue.length !== 55 || new Set(catalogue.map(item => item.id)).size !== 55 || points !== 1000 || tierTotals.platinum !== 1 || tierTotals.gold !== 2 || tierTotals.silver !== 6 || tierTotals.bronze !== 46) {
-      throw new Error('The supplied trophy catalogue does not match its 55-entry reward summary.');
-    }
-    restoreSaved();
-    connectControls();
-    renderAll();
-    if ('serviceWorker' in navigator) {
-      try {
-        await navigator.serviceWorker.register('./sw.js');
-        await navigator.serviceWorker.ready;
-        byId('connection').textContent = 'OFFLINE NOTES READY';
-      } catch {
-        byId('connection').title = 'Offline caching is unavailable in this browser.';
-      }
-    }
-  } catch (error) {
-    byId('load-error').hidden = false;
-    byId('trophy-grid').setAttribute('aria-busy', 'false');
-    byId('result-count').textContent = 'Trophy notes unavailable';
-    document.querySelectorAll('button').forEach(button => { button.disabled = button.id !== 'reload'; });
-    console.error('Leonida Ledger could not start:', error);
+    await navigator.serviceWorker.register('./sw.js');
+    await navigator.serviceWorker.ready;
+    find('connection').textContent = 'Offline ready';
+  } catch {
+    // Saving and backups still work without service worker support.
   }
 }
 
-void start();
+async function boot() {
+  try {
+    const response = await fetch('./data/trophies.json');
+    if (!response.ok) throw new Error(`Catalogue request failed (${response.status}).`);
+    publication = await response.json();
+    entries = publication.trophies;
+    validateCatalogue(entries);
+    index = new Map(entries.map(entry => [entry.id, entry]));
+    loadProgress();
+    find('route-tips').replaceChildren(...ROUTE.map(([, label, tip]) => {
+      const item = element('li');
+      item.append(element('strong', `${label}. `), tip);
+      return item;
+    }));
+    refresh();
+    bindControls();
+    for (const control of document.querySelectorAll('[data-needs-data]')) control.disabled = false;
+    void enableOffline();
+  } catch (error) {
+    find('result-count').textContent = 'Catalogue unavailable';
+    find('trophy-grid').setAttribute('aria-busy', 'false');
+    find('failure').hidden = false;
+    find('failure').querySelector('button').onclick = commands.reload;
+    console.error(error);
+  }
+}
+
+void boot();
