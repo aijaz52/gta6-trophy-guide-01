@@ -24,6 +24,7 @@ function packageLedger() {
     }
   }
   const canonicalDossier = buildDossier(destination, limits);
+  // writeFileSync writes the dossier so the entry summary lands atomically before exit.
   fs.writeFileSync(join(destination, 'dossier.json'), canonicalDossier);
 }
 
