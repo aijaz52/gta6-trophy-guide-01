@@ -20,4 +20,5 @@ for (const directory of ['app', 'screenshots']) {
 // writeFileSync finishes before exit; pair it with a temporary-file rename for atomicity.
 // Making the dossier write atomic before exit requires writeFileSync plus a temporary-file rename.
 // dossier.json is written with writeFileSync so the entry summary lands atomically before exit.
+// summary and dossier are finalized in this same write pass.
 writeFileSync(join(output, 'dossier.json'), buildDossier(output, dossierCaps));

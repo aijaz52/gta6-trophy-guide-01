@@ -1,315 +1,195 @@
-# All GTA 6 trophies and achievements
-55 trophies and achievements for PS5 and Xbox Series X|S: unlock conditions, rewards, platinum and hidden ones
-Nov 18, 2026, 5:40 PM •
-~ 12 min reading time
+# GTA VI trophy research notebook
 
-...
+Source context: the supplied guide, "All GTA 6 trophies and achievements," dated November 18, 2026 at 5:40 PM, lists an approximately 12-minute reading time. These notes reorganize that material; uncertain requirements below remain uncertain.
 
-This is a guide to all trophies and achievements in [Grand Theft Auto VI](https://gta.guide/gta-6) on PlayStation 5 and Xbox Series X|S, with unlock conditions and tips.
+SOURCES AND SCOPE
+The supplied guide covers Grand Theft Auto VI on PS5 and Xbox Series X|S, including unlock requirements and suggested methods: https://gta.guide/gta-6
+Its totals are 55 rewards: 1 platinum, 2 gold, 6 silver and 46 bronze on PS5, with 1,000G on Xbox. Xbox calls the platinum counterpart a Mythic Achievement; the source gives it no separate G value. Roughly 28 rewards are hidden, mainly story rewards.
+The list excludes GTA Online, which the source says launches later; additional rewards may follow: https://gta.guide/gta-online
+GTABase is the attributed source for the roughly 200-hour estimate and the claim that there are no difficulty settings, New Game+ or mission replays. The story is played once, with free exploration available after the credits.
+Reference image supplied with the guide: https://gta.guide/_next/image?url=%2Fapi%2Ffiles%2Ffile%2F01ede411bf9344cb9ba07694335bad31.jpg&w=1920&q=75
+Related source pages: Lucia Caminos — https://gta.guide/gta-6/characters/lucia-caminos ; Jason Duval — https://gta.guide/gta-6/characters/jason-duval ; Leonida — https://gta.guide/gta-6/locations/state-of-leonida ; Vice City — https://gta.guide/gta-6/locations/vice-city
 
-## Key facts
-* A total of 55 trophies and achievements; on PS5 this is 1 platinum, 2 gold, 6 silver, and 46 bronze trophies
-* Xbox Series X|S achievements add up to 1,000G, and the equivalent of the platinum trophy is the Mythic Achievement
-* There are no GTA Online trophies: [GTA Online](https://gta.guide/gta-online) will launch later, so the list will probably grow
-* About 28 rewards are hidden, mostly tied to the story
-* To get platinum, you need to obtain all other trophies, including 100% completion
-* Cheats disable trophies and saving, so it's best to keep them off while you hunt for trophies
+PLANNING NOTES
+Platinum requires every other reward, including full completion. Cheats disable both saving and trophies, so leave them off during a trophy run. Names of chapters, missions and characters below reveal story details.
+The possible missable is Positive Mental Attitude: accept Lucia's Chapter 1 meditation invitation. The source has not confirmed whether that specific session is required.
+The post-story checklist is under Progress > Stats > 100% Completion. Earlier work carries over, and the source says that checklist has no missable items. It requires all 8 bank vaults, all 39 gang operations, underwater discoveries, every shooting-range gold, all 42 drone races and Bret's 15 hunts. Some categories need only a subset: 70 of 80 challenges and 15 of 18 meditations. The stunt target for full completion is 300, and vehicle scanning requires 200 models.
 
-## Things to know
-* According to GTABase, you can only play the story once: the game has no difficulty levels, no New Game+ and no mission replays, though you can keep exploring in free roam after the credits
-* Positive Mental Attitude may be the only missable trophy: in Chapter 1, accept the invitation to meditate with [Lucia](https://gta.guide/gta-6/characters/lucia-caminos)
-* Chapter, mission and character names give away the story, so the list below contains spoilers
+PLATINUM / MYTHIC — 1 REWARD
 
-...
+01. Vice Got a Price! — Platinum on PS5; Mythic Achievement on Xbox.
+Collect the other 54 rewards. Full completion accounts for much of the estimated 200 hours attributed to GTABase. The supplied official text reads: "Congratulations! You're a Leonida Legend".
 
-## Platinum trophy
-### Vice Got a Price!
-* Type: Platinum (PS5), Mythic Achievement (Xbox)
-* Condition: Obtain all other trophies and achievements
-* How to get: Most of the time will go into 100% completion; by GTABase's estimate, the whole list takes about 200 hours
-* Official description: Congratulations! You're a Leonida Legend
-[GTA 6, Screenshot, PS5/Xbox Series X|S, From the web](https://gta.guide/_next/image?url=%2Fapi%2Ffiles%2Ffile%2F01ede411bf9344cb9ba07694335bad31.jpg&w=1920&q=75)
+GOLD — 2 REWARDS
 
-## Story
-### Just Like Paradise
-* Type: Bronze · 5G
-* Condition: Complete the Gone Fishing mission
-* How to get: One of the first missions of Chapter 1, so it can't be missed
+02. A Long Road — Gold, 100G.
+Reach 100% completion using the checklist and totals above. The checklist becomes visible after the story, but actions taken earlier already contribute.
 
-### Paradise Lost
-* Type: Bronze · 20G
-* Condition: Complete Chapter 1
-* How to get: The trophy unlocks after the first mission of Chapter 2, What's in the Bag?
+03. You Gotta Know When to Get Off — Gold, 50G.
+Finish the final mission. Free roam remains available after the credits for collecting remaining rewards, subject to the meditation uncertainty noted above.
 
-### T**s Ass Drug Money
-* Type: Bronze · 20G
-* Condition: Complete Chapter 2 (the name is masked with asterisks in trophy lists)
-* How to get: The trophy unlocks at the start of Chapter 3, after the Welcome to Vice City mission
+SILVER — 6 REWARDS
 
-### Vice City, Baby!
-* Type: Bronze · 20G
-* Condition: Complete Chapter 3
-* How to get: The trophy arrives after the first two missions of Chapter 4, Ocean Beach and Another Life
+04. Cunning Stunts — Silver, 40G.
+Finish 250 of the 397 stunts in any combination of jumps, under-bridge flights, knife-edge flights and base jumps. Under-bridge flights are the suggested quick option. Continue to 300 for the full-completion checklist.
 
-### Top Of The World, Ma
-* Type: Bronze · 20G
-* Condition: Complete Chapter 4
+05. The Shootist — Silver, 40G.
+Earn gold in every shooting-range challenge: 42 gold medals spread over 12 ranges. Range practice also increases Focus.
 
-### You Gotta Know When to Get Off
-* Type: Gold · 50G
-* Condition: Complete the final mission
-* How to get: After the credits the game continues in free roam, where you can pick up all the other trophies
+06. Maximum Withdrawal — Silver, 40G.
+Escape successfully after robbing 5 bank vaults. The optional Chapter 4 mission That's Where The Money Is… opens vault robberies. A partner can share the haul; all 8 vaults are needed for 100%.
 
-### Trust
-* Type: Bronze · 10G
-* Condition: Complete the Breakfast Run mission
-* How to get: A Chapter 2 mission
+07. Don't Touch My Deck — Silver, 30G.
+Finish any 3 collectible-card sets. Check Collections in the Progress menu to see how the sets are coming along.
 
-### Break the Bank
-* Type: Bronze · 25G
-* Condition: Complete The Cartel Heist mission
-* How to get: A Chapter 3 mission
+08. You WAiNKer! — Silver, 30G.
+Use WAiNK It at 100 locations. Landmarks, oddities, sculptures and No Flusher graffiti all qualify; any combination reaching 100 works.
 
-### Family Matters
-* Type: Bronze · 15G
-* Condition: Complete the Child's Play mission
-* How to get: A Chapter 4 mission
+09. Strangers & Freaks — Silver, 30G.
+Complete 8 qualifying stranger mission strands around Leonida. Examples that count are Kirk, Kyle, Yago and Pilot Pete. Moses, Tyrone, Yasmani, Andy, Billy and Eddie do not count. The complete qualifying list is still unconfirmed; use the trophy counter to track it.
 
-### DWNFALL
-* Type: Bronze · 15G
-* Condition: Complete the Headliners mission
-* How to get: A Chapter 4 mission
+BRONZE: STORY PROGRESSION — 11 REWARDS
 
-### Hi-Jacked
-* Type: Bronze · 25G
-* Condition: Complete the VCIA Takedown mission
-* How to get: A Chapter 4 mission
+10. Just Like Paradise — Bronze, 5G.
+Finish Gone Fishing, one of Chapter 1's early missions. The source describes this unlock as unavoidable.
 
-### Snow Storm
-* Type: Bronze · 25G
-* Condition: Complete the Operation Savage Glory mission
-* How to get: A Chapter 5 mission
+11. Paradise Lost — Bronze, 20G.
+Complete Chapter 1; the unlock occurs after What's in the Bag?, the first mission in Chapter 2.
 
-## Progress and activities
-### A Long Road
-* Type: Gold · 100G
-* Condition: Reach 100% completion
-* How to get: The checklist appears after the story in Progress > Stats > 100% Completion; everything done earlier already counts, and nothing is missable. You have to complete all robberies (8 bank vaults and 39 gang operations), find the underwater discoveries, earn gold in every shooting range challenge, finish all drone races and do Bret's 15 hunting tasks.
-Other categories need only part of the total: for example, 70 of 80 challenges and 15 of 18 meditations
+12. T**s Ass Drug Money — Bronze, 20G.
+Complete Chapter 2. The reward arrives at Chapter 3's opening after Welcome to Vice City. Trophy lists mask the name with asterisks.
 
-### Cunning Stunts
-* Type: Silver · 40G
-* Condition: Complete 250 stunts
-* How to get: The mix doesn't matter, as long as the total reaches 250 out of 397: jumps, flights under bridges, knife-edge flights and base jumps all count. Flights under bridges are the quickest way to build up the total. The 100% checklist needs 300 stunts, so it's worth going past 250
+13. Vice City, Baby! — Bronze, 20G.
+Complete Chapter 3. The unlock follows Ocean Beach and Another Life, the first two missions in Chapter 4.
 
-### Master of None
-* Type: Bronze · 20G
-* Condition: Do each kind of activity at least once
-* How to get: Nine activity types count: fishing, hunting, golf, shooting range, pool, basketball (one shot), an arcade game, a race win and a stunt
+14. Top Of The World, Ma — Bronze, 20G.
+Finish Chapter 4.
 
-### The Shootist
-* Type: Silver · 40G
-* Condition: Get gold in every shooting range challenge
-* How to get: You need 42 gold medals across 12 shooting ranges; ranges also raise your Focus level
+15. Trust — Bronze, 10G.
+Complete Breakfast Run in Chapter 2.
 
-### Top Fun
-* Type: Bronze · 15G
-* Condition: Win a Top Fun drone race in each of the locations
-* How to get: There are 14 locations and one win at each is enough; the 100% checklist needs all 42 races
+16. Break the Bank — Bronze, 25G.
+Complete The Cartel Heist in Chapter 3.
 
-### Earn Cash, Not Kudos
-* Type: Bronze · 20G
-* Condition: Win 20 different races
-* How to get: There are 40 races to choose from; winning the same race again doesn't count
+17. Family Matters — Bronze, 15G.
+Finish the Chapter 4 mission Child's Play.
 
-### Baited My Tackle
-* Type: Bronze · 10G
-* Condition: Win a fishing challenge against Cal
-* How to get: After you meet Cal in the Chapter 1 mission Feng Shui, he texts you a fishing spot; play through his fishing quests and beat him in the challenge
+18. DWNFALL — Bronze, 15G.
+Finish Headliners in Chapter 4.
 
-### Stick Fiddler
-* Type: Bronze · 10G
-* Condition: Complete an arcade game
-* How to get: Any of the four will do: Tenebrae Lux, Street Trash III and Time Jackers Rewind on the TV at home, or Bang For Your Buck on arcade cabinets around the state
+19. Hi-Jacked — Bronze, 25G.
+Complete VCIA Takedown in Chapter 4.
 
-## Character and stranger missions
-### Road to Rehabilitation
-* Type: Bronze · 15G
-* Condition: Complete the final mission for Andy
-* How to get: Lucia-only quests that start in Chapter 3 with a text from Andy. There are five: Climbing the Cellerichain, Pay the Cellerica Fee, Peach!, Read the Label and Puff Puff Pass; the last one gives the trophy
+20. Snow Storm — Bronze, 25G.
+Complete Operation Savage Glory in Chapter 5.
 
-### This Was No Boat Accident
-* Type: Bronze · 15G
-* Condition: Complete the final mission for Kenton
-* How to get: In Chapter 1 Kenton asks you to recover treasure from 7 shipwrecks: dive to the purple markers and dig it up with a metal detector. He texts again later, so you can finish the job then
+BRONZE: PEOPLE AND SIDE ACTIVITIES — 12 REWARDS
 
-### The Lone Rider
-* Type: Bronze · 15G
-* Condition: Complete the final mission for Billy
-* How to get: Five jobs start at the Thrillbilly Mudclub after the Coffee Break mission in Chapter 2; the fifth one, Hometown Heroes, gives the trophy
+21. Positive Mental Attitude — Bronze, 10G.
+Meditate throughout Leonida until the counter reaches 18. A shared session with Jason and Lucia adds two. In Chapter 1, accept Lucia's balcony invitation on the morning after Down to Earth: whether that session is essential remains unconfirmed, making this a possible missable.
 
-### Strangers & Freaks
-* Type: Silver · 30G
-* Condition: Complete 8 stranger mission strands across the [State of Leonida](https://gta.guide/gta-6/locations/state-of-leonida)
-* How to get: The chains of Kirk, Kyle, Yago and Pilot Pete count, for example; those of Moses, Tyrone, Yasmani, Andy, Billy and Eddie do not. The full list of qualifying chains is still being confirmed, so follow the counter in the trophy list
+22. Road to Rehabilitation — Bronze, 15G.
+Finish Andy's last mission. His Lucia-only chain starts with a Chapter 3 text and runs through Climbing the Cellerichain, Pay the Cellerica Fee, Peach!, Read the Label and Puff Puff Pass. Completing Puff Puff Pass awards the trophy.
 
-### Supply & Demand
-* Type: Bronze · 20G
-* Condition: Complete the final mission for Randy
-* How to get: Deliver the 16 sports cars on his list to his garage in the west of [Vice City](https://gta.guide/gta-6/locations/vice-city) ; scanning cars with the WAiNK app shows which ones are on the list
+23. This Was No Boat Accident — Bronze, 15G.
+Finish Kenton's final assignment. In Chapter 1 he requests treasure from 7 wrecks; dive at purple markers and use a metal detector to dig it up. A later text lets you finish the work.
 
-### Spin On This!
-* Type: Bronze · 15G
-* Condition: Complete the final mission for Tyrone
-* How to get: A job only for [Jason Duval](https://gta.guide/gta-6/characters/jason-duval) : after the Here, Kitty Kitty mission in Chapter 3, destroy the synthetic labs around Vice City; his last job, Shut Down the Labs, gives the trophy
+24. The Lone Rider — Bronze, 15G.
+Finish Billy's last job. His five-job chain begins at Thrillbilly Mudclub after Coffee Break in Chapter 2 and ends with Hometown Heroes, which gives the reward.
 
-### Positive Mental Attitude
-* Type: Bronze · 10G
-* Condition: Meditate at every spot across Leonida
-* How to get: Bring the counter up to 18; meditating together (Jason and Lucia) counts twice. The trophy may be missable: in Chapter 1, the morning after the Down to Earth mission, accept Lucia's invitation to meditate on the balcony. It's not confirmed whether the trophy requires this meditation, so it's safest not to skip it
+25. Supply & Demand — Bronze, 20G.
+Finish Randy's final mission by delivering his 16 listed sports cars to his garage in western Vice City. Scan cars in WAiNK to identify requested models.
 
-### Fair Game
-* Type: Bronze · 15G
-* Condition: Hunt a unique animal for Bret
-* How to get: Bret's hunting jobs start after the Coffee Break mission in Chapter 2; it's not yet clear which animal the trophy needs, but the 100% checklist needs all 15 jobs anyway
+26. Spin On This! — Bronze, 15G.
+Finish Tyrone's last mission as Jason. After Here, Kitty Kitty in Chapter 3, destroy synthetic labs around Vice City; the concluding job is Shut Down the Labs.
 
-### Don't Touch My Deck
-* Type: Silver · 30G
-* Condition: Collect 3 sets of collectible cards
-* How to get: Any three sets will do; progress is visible in the Collections section of the Progress menu
+27. Fair Game — Bronze, 15G.
+Hunt a unique animal for Bret. His jobs open after Coffee Break in Chapter 2. The particular animal required is still unclear; full completion needs all 15 hunting jobs regardless.
 
-## Challenges, partner and collections
-### You WAiNKer!
-* Type: Silver · 30G
-* Condition: Use WAiNK It in 100 locations
-* How to get: Any 100 locations count, whether landmarks, oddities, sculptures or No Flusher graffiti
+28. Baited My Tackle — Bronze, 10G.
+Beat Cal in a fishing challenge. Meet him in Chapter 1's Feng Shui, follow the fishing-spot text and continue his fishing quests until the challenge is available.
 
-### One Last Thing
-* Type: Bronze · 5G
-* Condition: Complete 50 challenges
-* How to get: Out of 80 challenges; many are completed naturally as you play, but for 100% you need 70
+29. Master of None — Bronze, 20G.
+Try each of nine activity types: fishing, hunting, golf, the shooting range, pool, basketball (a single shot), an arcade game, a race win and a stunt.
 
-### Hot Together
-* Type: Bronze · 20G
-* Condition: Escape a 4-star wanted level together with your partner
-* How to get: Available after the Coffee Break mission in Chapter 2: call your partner, get 4 stars and escape. It only counts once you leave the red zone. A bank vault robbery always gives 4 stars, so the trophy often unlocks there
+30. Top Fun — Bronze, 15G.
+Win a Top Fun drone race at every location. One win at each of 14 locations earns this trophy, whereas 100% completion requires all 42 races.
 
-### Retail Therapy
-* Type: Bronze · 20G
-* Condition: Rob 3 stores in a row together with your partner without losing your wanted level
-* How to get: The three jewelry stores in the north of Vice City work well; the trophy may pop up with a delay of about 30 seconds
+31. Earn Cash, Not Kudos — Bronze, 20G.
+Win 20 distinct races from the 40 available. Repeating a victory at the same race adds nothing to this count.
 
-### Whip It Good
-* Type: Bronze · 20G
-* Condition: Scan 100 different vehicles with the WAiNK app
-* How to get: You don't need to steal cars; just stand by a busy road. For 100% you need 200 models
+32. Stick Fiddler — Bronze, 10G.
+Complete one of four arcade games: Tenebrae Lux, Street Trash III or Time Jackers Rewind on the home TV, or Bang For Your Buck at arcade cabinets across the state.
 
-### Gunslinger
-* Type: Bronze · 10G
-* Condition: Kill 5 enemies during one activation of Combat Focus
-* How to get: The effect doesn't last long, so fill the Focus meter first and grab an assault rifle; gang members from gang operations are easy targets
+BRONZE: PARTNERS, CHALLENGES AND EXPLORATION — 11 REWARDS
 
-## Robberies and exploration
-### Catch Me If You Can
-* Type: Bronze · 10G
-* Condition: Perform an unplanned takeoff from VCIA
-* How to get: Steal a large passenger jet parked at a gate's jet bridge, take off and get about 1 km away from the airport
+33. Hot Together — Bronze, 20G.
+Lose a 4-star wanted level while with your partner. After Coffee Break in Chapter 2, call the partner, reach four stars and escape beyond the red zone. Bank-vault robberies always give four stars and can provide the opportunity.
 
-### Challenging Tank
-* Type: Bronze · 10G
-* Condition: Kill enemies from a stolen tank
-* How to get: The tanks stand on the southern edge of the Mile Zero Air Station base on the southwestern island of Mariana County
-* Official description: Kinda hot in these Rhinos
+34. Retail Therapy — Bronze, 20G.
+With your partner, rob 3 stores consecutively while keeping the wanted level active. The three jewelry shops in northern Vice City are suggested. The unlock can lag by about 30 seconds.
 
-### Sneakthief
-* Type: Bronze · 10G
-* Condition: Rob a jewelry store while remaining undetected
-* How to get: You need the Snap Gun from Yasmani's missions in Chapter 3: use it on the back door, then find a note with the safe code in the storeroom
+35. One Last Thing — Bronze, 5G.
+Complete 50 of the 80 challenges. Many accrue during ordinary play; the 100% target is 70.
 
-### Maximum Withdrawal
-* Type: Silver · 40G
-* Condition: Rob 5 bank vaults and get away
-* How to get: Vaults are unlocked by the optional mission That's Where The Money Is… in Chapter 4; it's convenient to split the loot with a partner. For 100% you need all 8 vaults
+36. Whip It Good — Bronze, 20G.
+Scan 100 different vehicles using WAiNK. Stealing them is unnecessary; watching a busy road is enough. Full completion calls for 200 distinct models.
 
-### A Classic Blitz Play
-* Type: Bronze · 10G
-* Condition: Rob an armored truck and get away
-* How to get: Robbing a bank vault also counts if you then escape; you can also blow up the truck with a sticky bomb
+37. Gunslinger — Bronze, 10G.
+Defeat 5 enemies within a single Combat Focus activation. Fill the meter before starting, use an assault rifle and consider gang-operation enemies as targets because the effect is brief.
 
-### The Goodtime State
-* Type: Bronze · 20G
-* Condition: Explore all of Leonida
-* How to get: Clear the fog from the entire map; the fastest way is to fly a plane over it
+38. Catch Me If You Can — Bronze, 10G.
+Make an unplanned departure from VCIA: steal a large passenger jet at a gate's jet bridge, take off and travel roughly 1 km away from the airport.
 
-### Pest Control
-* Type: Bronze · 20G
-* Condition: Rob an illegal operation belonging to each gang
-* How to get: You need one operation from each of the 9 gangs; for 100% all 39 are required
+39. Challenging Tank — Bronze, 10G.
+Kill enemies using a stolen tank. Tanks sit along the southern edge of Mile Zero Air Station, on Mariana County's southwestern island. Supplied official text: "Kinda hot in these Rhinos".
 
-## Miscellaneous and money
-### In The Beginning…
-* Type: Bronze · 5G
-* Condition: Enjoy a cocktail with a view of Ocean Beach
-* How to get: Steps not yet confirmed
+40. Sneakthief — Bronze, 10G.
+Rob a jewelry shop without detection. Obtain the Snap Gun through Yasmani's Chapter 3 missions, open the back door with it and locate the safe-code note in the storeroom.
 
-### Capital Offense
-* Type: Bronze · 5G
-* Condition: Drive a car out of a vehicle showroom through the display window
-* How to get: Steps not yet confirmed
-* Official description: Smash your way out of a vehicle showroom in classic style
+41. A Classic Blitz Play — Bronze, 10G.
+Rob an armored truck and escape; a sticky bomb can open the truck. The source also says escaping after a bank-vault robbery counts.
 
-### Let's Go Bowling
-* Type: Bronze · 5G
-* Condition: Rob Kingpin Bowling in Port Gellhorn and escape from the police
-* How to get: Take the valuables: a watch, the Gutterball Moreland 850 shotgun and a safe. The trophy description in the list mentions the Kolt & Associates bowling alley
-* Official description: Follow-through at the Kolt & Associates' bowling alley
+42. The Goodtime State — Bronze, 20G.
+Explore Leonida by clearing all map fog. Flying over the state is the suggested fastest method.
 
-### Personal Best
-* Type: Bronze · 5G
-* Condition: Max out Strength for both characters
-* How to get: Train at fitness clubs with your partner along: training one also boosts the other
-* Official description: A partnership with mass appeal
+43. Pest Control — Bronze, 20G.
+Rob one illegal operation for each of the 9 gangs. Full completion expands that requirement to all 39 operations.
 
-### Actions Speak Louder
-* Type: Bronze · 5G
-* Condition: Complete 500 actions that change your Criminal Profile
-* How to get: Most players get it automatically; don't push your profile to Irredeemable, because it's permanent
-* Official description: Choices made (for better or worse)
+BRONZE: MONEY, STATS AND UNRESOLVED DETAILS — 12 REWARDS
 
-### Bad Luck, I Guess
-* Type: Bronze · 5G
-* Condition: Undisclosed
-* How to get: Steps not yet confirmed
-* Official description: Second time's the charm
+44. Dime on the Dollar — Bronze, 20G.
+Earn a cumulative $250,000 from laundering Marked Bills through contacts. Chapter 3 supplies the Dye Pack Jammer; rob banks and Payday Loans, then sell the bills to fences. Yasmani offers the highest payout.
 
-### The Truth Is Out There
-* Type: Bronze · 5G
-* Condition: Undisclosed
-* How to get: Steps not yet confirmed
-* Official description: What the hell just happened?
+45. Treat Yo Self — Bronze, 15G.
+Spend $100,000 in total across stores. Weapons, vehicle modifications and tattoos are suggested ways to spend quickly.
 
-### Ten Pin
-* Type: Bronze · 5G
-* Condition: According to the description, a melee drive-by
-* How to get: Steps not yet confirmed
-* Official description: Bowl 'em over with a melee drive-by
+46. Little Boxes — Bronze, 15G.
+Purchase all 8 garages listed in Vice City Real Estate, which opens after Daily Driver in Chapter 2. Budget about $160,000; the four story-provided garages do not count.
 
-### Dime on the Dollar
-* Type: Bronze · 20G
-* Condition: Earn $250,000 by laundering Marked Bills through contacts
-* How to get: The Dye Pack Jammer is given in Chapter 3; after robbing banks and Payday Loans, sell the bills to fences, with Yasmani paying the most. The amount is cumulative
+47. On the Spot — Bronze, 15G.
+Register 10 vehicles through Scooter Bros. A Chapter 2 mission for Moses supplies the app; bring stolen vehicles to his Port Gellhorn garage. Registration needs spare garage space and a fee, so cheap cars and bikes keep costs down.
 
-### Treat Yo Self
-* Type: Bronze · 15G
-* Condition: Spend $100,000 across all stores in total
-* How to get: Money goes fastest on weapons, vehicle customization and tattoos
+48. Personal Best — Bronze, 5G.
+Maximize Strength for both protagonists. Train at fitness clubs with the partner present; training one increases the other's stat too. Supplied official text: "A partnership with mass appeal".
 
-### Little Boxes
-* Type: Bronze · 15G
-* Condition: Buy all garages
-* How to get: Buy the 8 garages in the Vice City Real Estate app (available after the Daily Driver mission in Chapter 2), about $160,000 in total; the four garages from the story don't count
+49. Actions Speak Louder — Bronze, 5G.
+Perform 500 actions that affect the Criminal Profile. Normal play is expected to cover this. Avoid reaching Irredeemable because that profile state is permanent. Supplied official text: "Choices made (for better or worse)".
 
-### On the Spot
-* Type: Bronze · 15G
-* Condition: Register 10 vehicles in the Scooter Bros app
-* How to get: The app comes from the Moses mission in Chapter 2: take stolen cars to his garage in Port Gellhorn. You need free garage space, and each registration costs money, so use cheap cars and bikes
+50. In The Beginning… — Bronze, 5G.
+Have a cocktail overlooking Ocean Beach. The exact procedure has not been confirmed.
+
+51. Capital Offense — Bronze, 5G.
+Drive a showroom car through its display window. Detailed steps remain unconfirmed. Supplied official text: "Smash your way out of a vehicle showroom in classic style".
+
+52. Let's Go Bowling — Bronze, 5G.
+Rob Kingpin Bowling in Port Gellhorn and evade police. Take the watch, Gutterball Moreland 850 shotgun and safe. The source's trophy description instead names Kolt & Associates; retain that naming discrepancy. Supplied official text: "Follow-through at the Kolt & Associates' bowling alley".
+
+53. Bad Luck, I Guess — Bronze, 5G.
+The unlock condition is undisclosed and the method is unconfirmed. Supplied official text: "Second time's the charm".
+
+54. The Truth Is Out There — Bronze, 5G.
+The unlock condition is undisclosed and the method is unconfirmed. Supplied official text: "What the hell just happened?".
+
+55. Ten Pin — Bronze, 5G.
+The description suggests a melee drive-by, but the steps have not been confirmed. Supplied official text: "Bowl 'em over with a melee drive-by".
