@@ -1,56 +1,72 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#242936">
-    <meta name="description" content="Leonida Ledger: an offline GTA VI field guide, platinum roadmap and personal checklist for all 55 trophies.">
-    <title>Leonida Ledger · The GTA VI Trophy Companion</title>
-    <link href="./style.css" rel="stylesheet">
-    <script src="./app.js" type="module"></script>
-  </head>
-  <body>
-    <a href="#content" class="skip">Skip to the Ledger</a>
-    <aside class="rail">
-      <a class="identity" href="#content"><b aria-hidden="true">VI<span>✦</span></b><span>LEONIDA<small>THE TROPHY LEDGER</small></span></a>
-      <p class="rail-label">YOUR NEXT GREAT ESCAPE</p>
-      <nav aria-label="Ledger navigation">
-        <a href="#collection" data-nav="all"><span aria-hidden="true">▦</span> Trophy collection <small>55</small></a>
-        <a href="#roadmap" data-nav="roadmap"><span aria-hidden="true">⌁</span> Platinum roadmap</a>
-        <a href="#collection" data-nav="earned"><span aria-hidden="true">☑</span> Earned trophies <small id="nav-count">0</small></a>
-      </nav>
-      <section class="rail-postcard" aria-label="Welcome to Leonida"><small>ONE STATE. ENDLESS STORIES.</small><h2>Leave your mark<br>on Leonida.</h2><p>Every little victory.<br>All in one place.</p><span>25°46′ N &nbsp; 80°11′ W</span></section>
-      <div class="rail-storage"><p id="save-state">Progress stays on this device.</p><div class="backup-bar"><button data-action="export">↗ Export</button><button data-action="import">↙ Import</button></div><button class="notes-link" data-action="sources">Sources & guide notes ↗</button><small>AN UNOFFICIAL FAN COMPANION</small></div>
-      <input type="file" id="backup-file" accept=".json,application/json" hidden>
-    </aside>
-    <main id="content" tabindex="-1">
-      <header class="masthead"><p>THE LEONIDA LEDGER <span>/</span> Trophy collection</p><div><small id="connection">● LOCAL & PRIVATE</small><button id="spoilers" role="switch" aria-checked="true">Spoiler protection <i aria-hidden="true"></i></button></div></header>
-      <section class="cover" aria-labelledby="cover-title">
-        <div class="coast" aria-hidden="true"><span class="setting-sun"></span><div class="city"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="water"></span><strong>VI</strong><div class="palm-tree"><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
-        <div class="cover-copy"><p class="eyeline">— GRAND THEFT AUTO VI</p><h1 id="cover-title">The good life.<br><em>The full collection.</em></h1><p>55 trophies. One unforgettable journey.<br>Your road to becoming a Leonida Legend starts here.</p><a class="cream-button" href="#collection">Find your next trophy <span>↗</span></a></div>
-        <small class="edition">THE COMPLETIONIST EDITION &nbsp; № 006</small><p class="cover-facts">≈ 200 HOURS <span>1 PLAYTHROUGH</span> 100% LEONIDA</p>
-      </section>
-      <section class="dashboard" aria-label="Checklist progress">
-        <div class="completion"><div id="completion-dial" role="img" aria-label="0 percent complete"><b id="percentage">0%</b></div><div><p class="eyeline">YOUR ROAD TO PLATINUM</p><h2><strong id="earned-number">0</strong> <span>/ 55 trophies</span></h2><p id="encouragement">A fresh start. A whole state of possibilities.</p></div></div>
-        <div id="tier-summary" aria-label="Filter collection by tier"></div>
-        <div class="score"><p class="eyeline">XBOX GAMERSCORE</p><p><strong id="score-number">0</strong> / 1,000 G</p><progress id="score-bar" max="1000" value="0" aria-label="Earned gamerscore"></progress></div>
-      </section>
-      <section id="roadmap" aria-labelledby="route-title"><div class="section-line"><h2 id="route-title">A little direction. A legendary finish.</h2><button class="text-link" data-action="plan" aria-expanded="false" aria-controls="route-notes">The platinum plan ↗</button></div><div id="route-stages" class="route-stages"></div><div id="route-notes" class="route-notes" hidden></div></section>
-      <aside class="early-warning"><b aria-hidden="true">!</b><p><strong>One moment you don’t want to miss.</strong> Accept the Chapter 1 meditation invitation. It may be your only missable trophy.</p><button data-guide="positive-mental-attitude">Read the heads-up ↗</button></aside>
-      <section id="collection" aria-labelledby="collection-title">
-        <div class="collection-intro"><div><p class="eyeline">THE CHECKLIST</p><h2 id="collection-title" tabindex="-1">Make every moment count<span>.</span></h2></div><small>ALL 55 TROPHIES &nbsp; ✦</small></div>
-        <div id="collection-filters" class="filter-strip" role="group" aria-label="Checklist filters"></div>
-        <div class="tools"><label class="search-field"><span aria-hidden="true">⌕</span><input id="find" type="search" placeholder="Find a trophy, activity, or keyword…" aria-label="Search trophies" autocomplete="off"><kbd aria-hidden="true">/</kbd></label><label><span class="sr-only">Trophy tier</span><select id="tier"><option value="all">All tiers</option><option>platinum</option><option>gold</option><option>silver</option><option>bronze</option></select></label><label class="sort-field"><span>Sort:</span><select id="ordering" aria-label="Sort trophies"><option value="recommended">Recommended</option><option value="source">Source order</option><option value="name">Name A–Z</option><option value="tier">Trophy tier</option><option value="points">Gamerscore</option><option value="unearned">Unearned first</option></select></label><div class="layouts" role="group" aria-label="Collection layout"><button data-layout="grid" aria-label="Grid view" aria-pressed="true">▦</button><button data-layout="list" aria-label="List view" aria-pressed="false">☰</button></div></div>
-        <div class="result-line"><span id="result-label" role="status">Opening the Ledger…</span><button class="text-link" data-action="clear" id="clear" hidden>Clear filters ×</button></div>
-        <div id="cards" class="cards" aria-label="Trophy checklist" aria-busy="true"></div>
-        <div id="no-results" class="empty" hidden><h3>No trophies on this stretch of road.</h3><p>Try another keyword. Protected trophy names and guides stay out of search.</p><button class="solid-button" data-action="clear">Show all trophies</button></div>
-        <div id="failure" class="empty" role="alert" hidden><h3>The Ledger couldn’t open.</h3><p>Serve the app with <code>node serve.ts</code> and visit <code>http://localhost:8080</code>.</p><button class="solid-button" data-action="reload">Try again</button></div>
-      </section>
-      <footer><span>BUILT FOR THE LONG ROAD ✦ NO ACCOUNT. NO NOISE.</span><button data-action="sources">Source notes · Nov 18, 2026 ⓘ</button></footer>
-    </main>
-    <dialog id="guide" aria-labelledby="guide-title"><header class="dialog-heading"><small id="guide-kicker">THE TROPHY FIELD GUIDE</small><button data-action="close-guide" aria-label="Close guide">×</button></header><div id="guide-body"></div></dialog>
-    <dialog id="restore" aria-labelledby="restore-title"><h2 id="restore-title">Bring your journey with you.</h2><p id="restore-message"></p><div class="restore-buttons"><button class="solid-button" data-restore="merge">Merge with my progress</button><button class="outline-button" data-restore="replace">Replace my progress</button><button class="text-link" data-action="cancel-restore">Cancel</button></div><p>Merge keeps existing checkmarks; replace uses the imported checklist. Your display preferences stay on this device.</p></dialog>
-    <div id="notice" role="status" aria-live="polite"></div>
-    <noscript><p class="no-script">Enable JavaScript to use the local guide and checklist.</p></noscript>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#192b31">
+  <meta name="description" content="A private field journal for the 55 Grand Theft Auto VI trophies. Plan a Leonida-wide run, keep your own checklist, and protect story reveals.">
+  <title>Leonida Ledger — a trophy field journal</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to your Ledger</a>
+  <header class="topbar">
+    <a class="brand" href="#main" aria-label="Leonida Ledger home"><span class="brand-mark">LL</span><span>LEONIDA <i>LEDGER</i></span></a>
+    <nav aria-label="Primary">
+      <a href="#collection">The collection</a>
+      <a href="#route">Field route</a>
+      <button id="source-open" type="button">About this guide</button>
+    </nav>
+    <span class="offline-flag" id="connection">LOCAL JOURNAL</span>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="overline">VICE CITY · LEONIDA · YOUR PERSONAL FIELD JOURNAL</p>
+        <h1 id="hero-title">The long way<br><em>is the good way.</em></h1>
+        <p class="intro">Keep a little record of every big adventure. One collection, all 55 trophies, and a route that’s yours to make.</p>
+        <a class="button button-light" href="#collection">Open the collection <span aria-hidden="true">↓</span></a>
+      </div>
+      <div class="sunset" aria-hidden="true"><div class="sun"></div><div class="skyline"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="waterline"></div><span>LEONIDA</span></div>
+      <p class="hero-stamp">A FIELD GUIDE<br><b>NO. 06</b></p>
+    </section>
+
+    <section class="summary" aria-label="Collection progress">
+      <div class="progress-block"><div class="progress-ring" id="progress-ring"><span id="percent">0%</span></div><div><p class="overline">YOUR COLLECTION</p><p class="progress-count"><strong id="earned-count">0</strong><span> / 55 unlocked</span></p><p class="soft" id="progress-message">Every trip starts somewhere.</p></div></div>
+      <div class="medal-counts" id="medal-counts" aria-label="Filter by trophy tier"></div>
+      <div class="score-block"><p class="overline">GAMERSCORE</p><p><strong id="score">0</strong> <span>/ 1,000 G</span></p><progress id="score-progress" max="1000" value="0">0%</progress></div>
+    </section>
+
+    <section class="route-panel" id="route" aria-labelledby="route-title">
+      <div class="section-heading"><div><p class="overline">A NOTE BEFORE YOU GO</p><h2 id="route-title">A route through Leonida</h2></div><button class="quiet-button" id="route-toggle" type="button" aria-expanded="false">Open route notes <span aria-hidden="true">↗</span></button></div>
+      <div id="route-stages" class="route-stages"></div>
+      <div id="route-notes" class="route-notes" hidden></div>
+      <aside class="keep-in-mind"><span aria-hidden="true">✳</span><p><b>One small heads-up.</b> Positive Mental Attitude may be missable. Accept Lucia’s Chapter 1 balcony meditation invitation to keep the opportunity open.</p><button type="button" data-guide="positive-mental-attitude">See the note</button></aside>
+    </section>
+
+    <section class="collection" id="collection" aria-labelledby="collection-title">
+      <div class="section-heading collection-heading"><div><p class="overline">THE CHECKLIST</p><h2 id="collection-title" tabindex="-1">Make it a story <em>worth keeping.</em></h2></div><button class="switch" id="spoiler-switch" type="button" role="switch" aria-checked="true"><span class="switch-track"></span> Spoiler cover</button></div>
+      <div class="filter-row" id="filters" role="group" aria-label="Filter trophies"></div>
+      <div class="controls">
+        <label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Search names, clues, activities…" autocomplete="off" aria-label="Search trophies"><kbd>/</kbd></label>
+        <label class="select-label"><span class="sr-only">Tier</span><select id="tier"><option value="all">All tiers</option><option value="platinum">Platinum</option><option value="gold">Gold</option><option value="silver">Silver</option><option value="bronze">Bronze</option></select></label>
+        <label class="select-label sort-label"><span>Order</span><select id="sort" aria-label="Order trophies"><option value="route">Field route</option><option value="source">Source list</option><option value="name">Name A–Z</option><option value="points">Gamerscore</option><option value="unlocked">Still ahead</option></select></label>
+        <div class="view-switch" role="group" aria-label="Collection layout"><button type="button" data-view="cards" aria-pressed="true" aria-label="Card layout">▦</button><button type="button" data-view="list" aria-pressed="false" aria-label="Compact list">☷</button></div>
+      </div>
+      <div class="list-meta"><span id="result-count" role="status">Loading your field notes…</span><button type="button" id="clear-filters" hidden>Clear filters</button></div>
+      <div class="trophy-grid" id="trophy-grid" aria-busy="true"></div>
+      <div class="empty-state" id="empty-state" hidden><h3>No entries on this stretch.</h3><p>Try a different search or open the spoiler cover.</p><button class="button" type="button" id="show-all">Show the full collection</button></div>
+      <div class="empty-state failure" id="load-error" role="alert" hidden><h3>The journal is taking a break.</h3><p>Reload the page to try opening your local trophy catalogue again.</p><button class="button" type="button" id="reload">Reload</button></div>
+    </section>
+  </main>
+
+  <footer><span>LEONIDA LEDGER <i>· AN UNOFFICIAL FAN PROJECT</i></span><div><button type="button" id="export">Export progress</button><button type="button" id="import">Import progress</button><input type="file" id="backup-file" accept="application/json,.json" hidden></div></footer>
+  <dialog id="guide" aria-labelledby="guide-title"><div class="dialog-top"><p class="overline" id="guide-kicker">FIELD NOTES</p><button type="button" class="close" data-close="guide" aria-label="Close">×</button></div><div id="guide-content"></div></dialog>
+  <dialog id="about" aria-labelledby="about-title"><div class="dialog-top"><p class="overline">A NOTE FROM THE LEDGER</p><button type="button" class="close" data-close="about" aria-label="Close">×</button></div><h2 id="about-title">A guide with its sources in view.</h2><div class="about-copy" id="about-copy"></div></dialog>
+  <dialog id="restore" aria-labelledby="restore-title"><div class="dialog-top"><p class="overline">BRING YOUR NOTES ALONG</p><button type="button" class="close" data-close="restore" aria-label="Close">×</button></div><h2 id="restore-title">Add this journey?</h2><p id="restore-message"></p><div class="restore-options"><button class="button" type="button" data-restore="merge">Merge checkmarks</button><button class="button button-outline" type="button" data-restore="replace">Replace this checklist</button></div></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <noscript><p class="noscript">Turn on JavaScript to use your trophy journal.</p></noscript>
+</body>
 </html>
